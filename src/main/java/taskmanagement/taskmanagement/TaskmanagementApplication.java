@@ -1,17 +1,20 @@
 package taskmanagement.taskmanagement;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import taskmanagement.taskmanagement.repository.UserRepository;
+
 
 
 @SpringBootApplication
-@ComponentScan(value = "controllers")
+//@ComponentScan(basePackages = {"taskmanagement.taskmanagement"})
 public class TaskmanagementApplication {
 	
-	//@Autowired
-	//UsersRepository usersRepository;
+	@Autowired
+	UserRepository usersRepository;
 	
 	
 	///@PostConstruct
