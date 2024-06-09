@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{templateBase/BaseAdminLTE}">
+
+<head>
+	<meta charset="utf-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+
+
+	<select th:fragment="users" id="usernamee" name="usernamee" data-placeholder="Seleccione usuario"
+		aria-describedby="" class="form-control select2">
+		<option value="-1">Seleccione usuario</option>
+		<option th:each="user: ${users}" th:value="${user.userId}" th:text="${user.username}">
+		</option>
+	</select>
+
+
+
+
+
+</body>
+
+</html>

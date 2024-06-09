@@ -51,7 +51,15 @@ public class User implements Serializable {
 		return this.userId;
 	}
 	
-	
+	public User(int userId, String username, String password, String email, boolean enabled, String description) {
+		super();
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.enabled = enabled;
+		this.description = description;
+	}
 
 	public User(String username, String password, String email, boolean enabled, String description) {
 		super();
