@@ -15,15 +15,16 @@
 		<div class="col-12">
 
 			<!-- /.card -->
-			
-			
+
+
 			<div class="card">
 				<div class="card-header">
 					<h3 class="card-title">Usuarios</h3>
 				</div>
 
 				<div class="text-right">
-					<a th:href="@{/user/add}" class="btn btn-success form-control mt-2 mr-2" style="width: 75px;">Add</a>
+					<a th:href="@{/group/add}" class="btn btn-success form-control mt-2 mr-2"
+						style="width: 75px;">Add</a>
 				</div>
 
 				<!-- /.card-header -->
@@ -32,39 +33,29 @@
 						<thead>
 							<tr>
 								<th>id</th>
-								<th>Usuario</th>
-								<th>Email</th>
-								<th>Estado</th>
+								<th>Nombre</th>
 								<th>Descripción</th>
 								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
-							<div th:each="user:${users}">
-								<tr id="fila${user.userId}">
-									<th th:text="${user.userId}" ></th>
-									<th th:text="${user.username}" ></th>
-									<th th:text="${user.email}"></th>
-									<th th:text="${user.enabled}" ></th>
-									<th th:text="${user.description}"></th>
+							<div th:each="group:${groups}">
+								<tr id="fila${group.id}">
+									<th th:text="${group.id}"></th>
+									<th th:text="${group.groupName}"></th>
+									<th th:text="${group.description}"></th>
 									<td><a title="Modificar usuario" class="btn btn-info"
-											th:href="@{/user/update/}+${user.userId}"><i class="nav-icon fas fa-edit"
+											th:href="@{/group/update/}+${group.id}"><i class="nav-icon fas fa-edit"
 												aria-hidden="true"></i></a>
 										<button title="Eliminar usuario" class="btn btn-danger"
-											th:attr="data-target='#DangerModalalert'+${user.userId}" type="submit"
+											th:attr="data-target='#DangerModalalert'+${group.id}" type="submit"
 											data-toggle="modal">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</button>
 									</td>
 								</tr>
 
-
-
-
-
-
-
-								<div class="modal fade" th:id="DangerModalalert+${user.userId}">
+							<div class="modal fade" th:id="DangerModalalert+${group.id}">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
@@ -77,7 +68,7 @@
 											<div class="modal-body">
 												<p style="color: red;">
 													Está seguro que quiere eliminar el usuario <span
-														th:text="${user.username}"></span>
+														th:text="${group.id}"></span>
 												</p>
 											</div>
 											<div class="modal-footer justify-content-between">
@@ -86,7 +77,7 @@
 
 
 												<a type="submit" class="btn btn-primary waves-effect waves-light"
-													th:attr="href='/user/deleteuser/'+${user.userId}"><i
+													th:attr="href='/group/deletegroup/'+${group.id}"><i
 														class="fa fa-trash"></i> Eliminar</a>
 											</div>
 										</div>
@@ -104,8 +95,6 @@
 								<th>Browser</th>
 								<th>Platform(s)</th>
 								<th>Engine version</th>
-								<th>CSS grade</th>
-								<th>Acciones</th>
 							</tr>
 						</tfoot>
 					</table>
@@ -125,7 +114,7 @@
 
 		<script type="text/javascript">
 
-			function deleteUser() {
+			function addGroup() {
 
 				//validar si las pass coinciden 
 
@@ -194,14 +183,7 @@
 
 
 
-			function prueba() {
 
-				Toast.fire({
-					title: "sdfsdfsdf",
-					text: "Insertado correctamente",
-					icon: "success"
-				})
-			}
 
 
 		</script>

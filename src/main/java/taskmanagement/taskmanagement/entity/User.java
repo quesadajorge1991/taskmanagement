@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * The persistent class for the users database table.
  * 
@@ -18,7 +20,7 @@ public class User implements Serializable {
 
 	@Id
 	@Column(name="user_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 
 	@Lob
@@ -33,7 +35,9 @@ public class User implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Authority
-	@OneToMany(mappedBy="user")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id", updatable = false)
+	@JsonIgnore
 	private List<Authority> authorities;
 
 	//bi-directional many-to-one association to Comment
@@ -122,19 +126,8 @@ public class User implements Serializable {
 		this.authorities = authorities;
 	}
 
-	public Authority addAuthority(Authority authority) {
-		getAuthorities().add(authority);
-		authority.setUser(this);
 
-		return authority;
-	}
 
-	public Authority removeAuthority(Authority authority) {
-		getAuthorities().remove(authority);
-		authority.setUser(null);
-
-		return authority;
-	}
 
 	public List<Comment> getComments() {
 		return this.comments;

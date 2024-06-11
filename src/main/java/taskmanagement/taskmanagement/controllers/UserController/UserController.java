@@ -141,7 +141,7 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("msgbody",
 					"Usuario " + user.getUsername() + " modificado correctamente");
 			redirectAttributes.addFlashAttribute("msgtipo", "success");
-			redirectAttributes.addFlashAttribute("msgtitu", "Error");
+			redirectAttributes.addFlashAttribute("msgtitu", "Información");
 
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("msgbody", "Error al guardar los datos");

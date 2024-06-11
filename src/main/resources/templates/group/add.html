@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{templateBase/BaseAdminLTE}">
+
+<head>
+	<meta charset="utf-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+
+
+	<div layout:fragment="content">
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">Agregar Grupo</h3>
+			</div>
+			<!-- /.card-header -->
+			<!-- form start -->
+			<form th:object="${group}" method="POST" th:action="@{/group/addGroup}">
+				<div class="card-body">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="login2">Nombre </label> <input name="groupName" type="text" id="groupName"
+								class="form-control" placeholder="Usuario" th:field="*{groupName}">
+						</div>
+						<div class="form-group">
+							<label class="login2">Descripción </label>
+
+							<textarea name="description" id="description" type="email" class="form-control"
+								placeholder="Usuario" th:field="*{description}" />
+						</div>
+
+
+					</div>
+
+
+				</div>
+				<!-- /.card-body -->
+
+				<div class="card-footer">
+					<a class="btn btn-primary waves-effect waves-light" th:href="@{/group/groups}"><i
+							class="fa fa-users"></i> Cancelar</a>
+					<button type="button" onclick="addGroup();" class="btn btn-primary waves-effect waves-light">
+						<i class="fa fa-save"></i> Aceptar
+					</button>
+
+
+				</div>
+			</form>
+		</div>
+
+
+		<script th:inline="javascript" charset="utf-8">
+
+
+			function addGroup() {
+				var Toast = Swal.mixin({
+					toast: true,
+					position: 'top-end',
+					showConfirmButton: false,
+					timer: 3000
+				});
+
+				var groupName = $('#groupName').val();
+				var description = $('#description').val()
+
+
+				var group = {
+					groupName: groupName,
+					description: description
+				}
+
+				if (groupName != "" && description != "") { //validar que el pueblo a insertar no este vacio
+
+					$.ajax({
+						url: '/group/addGroup',
+						dataType: 'json',
+						method: 'post',
+						data: JSON.stringify(group),
+						contentType: 'application/json',
+						success: function (data) {
+							Toast.fire({
+								title: data.msgtitle,
+								text: data.msgbody,
+								icon: data.msgtype
+							})
+							$('#groupName').val('');
+							$('#description').val('')
+						},
+						error: function (data) {
+							Toast.fire({
+								title: data.msgtitle,
+								text: data.msgbody,
+								icon: data.msgtype
+							})
+
+						}
+					});
+				} else {
+					var type =/*[[#{Form.group.vacio.type}]]*/;
+					var body =/*[[#{Form.group.vacio.body}]]*/;
+					var title =/*[[#{Form.group.vacio.title}]]*/;
+
+					Toast.fire({
+						title: title,
+						text: body,
+						icon: type
+					})
+
+
+				}
+
+
+
+			}
+
+
+		</script>
+
+
+	</div>
+
+
+
+
+
+</body>
+
+</html>

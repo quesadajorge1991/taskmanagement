@@ -46,11 +46,12 @@
 	th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
 <link rel="stylesheet"
 	th:href="@{/plugins/datatables-buttons/css/buttons.bootstrap4.min.css}">
-	
-	
-	  <!-- Select2 -->
-  <link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
-  <link rel="stylesheet" th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
+
+
+<!-- Select2 -->
+<link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
+<link rel="stylesheet"
+	th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
 
 
 </head>
@@ -259,16 +260,47 @@
 										<p>Add usuario</p>
 								</a></li>
 
-								<li class="nav-item"><a th:href="@{/user/addPermisos}"
-									class="nav-link"> <i class="far fa-circle nav-icon"></i>
-										<p>Add permisos</p>
-								</a></li>
+
+
+
+
 								<li class="nav-item"><a th:href="@{/user/resetpass}"
 									class="nav-link"> <i class="far fa-circle nav-icon"></i>
 										<p>Reset contraseña</p>
 								</a></li>
 
 							</ul></li>
+
+
+						<li class="nav-item menu-open"><a href="#" class="nav-link">
+								<i class="nav-icon fas fa-key"></i>
+								<p>
+									Roles y Permisos <i class="right fas fa-angle-left"></i>
+								</p>
+						</a>
+							<ul class="nav nav-treeview">
+								<li class="nav-item"><a th:href="@{/group/groups}"
+									class="nav-link"> <i class="far fa-circle nav-icon"></i>
+										<p>Grupos</p>
+								</a></li>
+
+								<li class="nav-item"><a th:href="@{/authority/addAutority}"
+									class="nav-link"> <i class="far fa-circle nav-icon"></i>
+										<p>Permiso a Usuario</p>
+								</a></li>
+								<li class="nav-item"><a th:href="@{/authority/addAutority}"
+									class="nav-link"> <i class="far fa-circle nav-icon"></i>
+										<p>Permiso a Grupo</p>
+								</a></li>
+
+								
+
+
+
+							</ul></li>
+
+
+
 						<li class="nav-item"><a href="pages/widgets.html"
 							class="nav-link"> <i class="nav-icon fas fa-th"></i>
 								<p>
@@ -826,21 +858,18 @@
 	<script th:src="@{/plugins/sweetalert2/sweetalert2.min.js}"></script>
 	<!-- Toastr -->
 	<script th:src="@{/plugins/toastr/toastr.min.js}"></script>
-	
-	
+
+
 	<!-- Select2 -->
-<script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+	<script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
 
 	<script>
-	
-	 $('.select2').select2();
-	   //Initialize Select2 Elements
-	    $('.select2bs4').select2({
-	      theme: 'bootstrap4'
-	    })
-	 
-	 
-	
+		$('.select2').select2();
+		//Initialize Select2 Elements
+		$('.select2bs4').select2({
+			theme : 'bootstrap4'
+		})
+
 		var Toast = Swal.mixin({
 			toast : true,
 			position : 'top-end',
@@ -848,19 +877,16 @@
 			timer : 3000
 		});
 
-		
-		$(document).ready(function () {
+		$(document).ready(function() {
 
 			/*alert(temp)*/
 
-				Toast.fire({
-				  title: "[[${msgtitu}]]",
-				  text: "[[${msgbody}]]",
-				  icon: "[[${msgtipo}]]"
-		})
+			Toast.fire({
+				title : "[[${msgtitu}]]",
+				text : "[[${msgbody}]]",
+				icon : "[[${msgtipo}]]"
+			})
 		});
-		
-	
 
 		$(function() {
 			$("#example1").DataTable(
