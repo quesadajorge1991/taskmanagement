@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.service.UserService;
+import taskmanagement.taskmanagement.service.Group.GroupService;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -28,6 +29,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	GroupService groupService;
 
 	@GetMapping(value = "/users")
 	public String users(Model model) {
@@ -81,11 +85,12 @@ public class UserController {
 	@GetMapping(value = "/add")
 	public String add(Model model) {
 		model.addAttribute("user", new User());
+		model.addAttribute("groups", groupService.findAll());
 		return "/user/add";
 	}
 
 	@PostMapping(value = "/addUser")
-	public String add_Usuario(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+	public String add_Usuario(@ModelAttribute("user") User user,@RequestParam(value = "") RedirectAttributes redirectAttributes) {
 
 		try {
 

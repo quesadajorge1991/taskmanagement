@@ -28,7 +28,7 @@
 
 				<!-- /.card-header -->
 				<div class="card-body">
-					<table id="example1" class="table table-bordered table-striped">
+					<table id="example1" class="table table-bordered table-striped " >
 						<thead>
 							<tr>
 								<th>id</th>
@@ -40,10 +40,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<div th:each="user:${users}">
-								<tr id="fila${user.userId}">
+							<div th:each="user:${users}" >
+								<tr id="fila${user.userId}"  >
 									<th th:text="${user.userId}" ></th>
-									<th th:text="${user.username}" ></th>
+									<th th:text="${user.username}" 	></th>
 									<th th:text="${user.email}"></th>
 									<th th:text="${user.enabled}" ></th>
 									<th th:text="${user.description}"></th>

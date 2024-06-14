@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{templateBase/BaseAdminLTE}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{templateBase/BaseAdminLTE}">
 
 <head>
-<meta charset="utf-8">
-<title>Insert title here</title>
+	<meta charset="utf-8">
+	<title>Insert title here</title>
 </head>
+
 <body>
 
 
@@ -18,64 +17,116 @@
 			</div>
 			<!-- /.card-header -->
 			<!-- form start -->
-			<form th:object="${user}" method="POST" th:action="@{/user/addUser}">
+			<form th:object="${user}" method="post" th:action="@{/user/addUser}">
 				<div class="card-body">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="form-group">
-							<label class="login2">Usuario </label> <input name="firstname"
-								type="text" class="form-control" placeholder="Usuario"
-								th:field="*{username}">
+							<label class="login2">Usuario </label> <input name="firstname" type="text"
+								class="form-control" placeholder="Usuario" th:field="*{username}">
 						</div>
 						<div class="form-group">
-							<label class="login2">Email </label> <input name="firstname"
-								type="email" class="form-control" placeholder="Usuario"
-								th:field="*{email}">
+							<label class="login2">Email </label> <input name="firstname" type="email"
+								class="form-control" placeholder="Usuario" th:field="*{email}">
 						</div>
 						<div class="form-group">
-							<label class="login2">Contraseña </label> <input
-								th:field="*{password}" name="password" id="password"
-								type="password" class="form-control" placeholder="Contraseña"
+							<label class="login2">Contraseña </label> <input th:field="*{password}" name="password"
+								id="password" type="password" class="form-control" placeholder="Contraseña"
 								required="true">
 						</div>
 						<div class="form-group">
 							<div class="form-group res-mg-t-15">
 								<label class="login2">Descripción </label>
-								<textarea th:field="*{description}" name="descripcion"
-									class="form-control" id="descripcion" placeholder="Descripción"></textarea>
+								<textarea th:field="*{description}" name="descripcion" class="form-control"
+									id="descripcion" placeholder="Descripción"></textarea>
 							</div>
 						</div>
 						<div class="form-group">
 
 
 							<div class="custom-control custom-checkbox">
-								<input th:field="*{enabled}" class="custom-control-input"
-									type="checkbox" id="customCheckbox2" checked> <label
-									for="customCheckbox2" class="custom-control-label">Habilitar</label>
+								<input th:field="*{enabled}" class="custom-control-input" type="checkbox"
+									id="customCheckbox2" checked> <label for="customCheckbox2"
+									class="custom-control-label">Estado</label>
 							</div>
 						</div>
+
+
+						<!-- GRUPOS -->
+
+						<table class="table table-bordered table-striped example2">
+							<thead>
+								<tr>
+									<th>id</th>
+									<th>Nombre</th>
+									<th>Descripción</th>
+									<th>Seleccionar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<div th:each="group:${groups}">
+									<tr id="fila${group.id}">
+										<th th:text="${group.id}"></th>
+										<th th:text="${group.groupName}"></th>
+										<th th:text="${group.description}"></th>
+										<td>
+											<div class="custom-control custom-checkbox">
+												<input class="custom-control-input" type="checkbox" th:id="${group.id}">
+												<label th:for="${group.id}" class="custom-control-label"></label>
+											</div>
+										</td>
+									</tr>
+								</div>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Rendering engine</th>
+									<th>Browser</th>
+									<th>Platform(s)</th>
+									<th>Engine version</th>
+								</tr>
+							</tfoot>
+						</table>
+
+						<!-- FIN GRUPOS -->
+
+
+
+
+					</div>
+
+					<div class="card-footer">
+						<a class="btn btn-primary waves-effect waves-light" th:href="@{/user/users}"><i
+								class="fa fa-users"></i> Cancelar</a>
+						<button type="submit" class="btn btn-primary waves-effect waves-light">
+							<i class="fa fa-save"></i> Aceptar
+						</button>
+
+
 					</div>
 
 
 				</div>
 				<!-- /.card-body -->
 
-				<div class="card-footer">
-					<a class="btn btn-primary waves-effect waves-light"
-						th:href="@{/user/users}"><i class="fa fa-users"></i> Cancelar</a>
-					<button type="submit"
-						class="btn btn-primary waves-effect waves-light">
-						<i class="fa fa-save"></i> Aceptar
-					</button>
 
 
-				</div>
+
+
+
+
+
+
+
+
+
 			</form>
 		</div>
 
-	
+
 	</div>
 
 
 
 </body>
+
 </html>
