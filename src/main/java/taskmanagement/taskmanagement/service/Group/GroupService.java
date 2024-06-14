@@ -2,38 +2,27 @@ package taskmanagement.taskmanagement.service.Group;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.provisioning.GroupManager;
 
 import taskmanagement.taskmanagement.entity.Groups;
-import taskmanagement.taskmanagement.repository.GroupRepository;
 
-@Service
-public class GroupService {
+public interface GroupService extends GroupManager {
 
-	@Autowired
-	GroupRepository groupRepository;
+	public List<Groups> findAll();
 
-	public List<Groups> findAll() {
-		return groupRepository.findAll();
-	}
+	public void save(Groups group);
 
-	public void save(Groups group) {
-		groupRepository.save(group);
-	}
+	public void deleteById(int id);
 
-	public void deleteById(int id) {
-		groupRepository.deleteById(id);
-	}
+	public void delete(Groups group);
 
-	public void delete(Groups group) {
-		groupRepository.delete(group);
-	}
+	public Groups findById(int id);
+
+	public Groups findByGroupName(String findByGroupName);
 	
-	public Groups findById(int id) {
-		return groupRepository.findById(id).get();
-	}
+	List<String> findAllGroups();
 	
-	
-	
+	void removeGroupAuthority(String groupName, GrantedAuthority authority);
+
 }

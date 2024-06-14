@@ -1,4 +1,4 @@
-package taskmanagement.taskmanagement.service.IUserService;
+package taskmanagement.taskmanagement.service.User;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.repository.UserRepository;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImp implements IUserService {
 
 	@Autowired
 	UserRepository userRepository;

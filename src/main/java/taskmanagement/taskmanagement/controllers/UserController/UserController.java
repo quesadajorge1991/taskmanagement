@@ -19,18 +19,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import taskmanagement.taskmanagement.entity.User;
-import taskmanagement.taskmanagement.service.Group.GroupService;
-import taskmanagement.taskmanagement.service.IUserService.UserService;
+import taskmanagement.taskmanagement.service.Group.GroupServiceImp;
+import taskmanagement.taskmanagement.service.User.UserServiceImp;
 
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
 
 	@Autowired
-	UserService userService;
+	UserServiceImp userService;
 
 	@Autowired
-	GroupService groupService;
+	GroupServiceImp groupService;
 
 	@GetMapping(value = "/users")
 	public String users(Model model) {

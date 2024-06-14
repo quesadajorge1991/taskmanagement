@@ -2,6 +2,8 @@ package taskmanagement.taskmanagement.entity;
 
 import java.io.Serializable;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -13,7 +15,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "authorities")
 @NamedQuery(name = "Authority.findAll", query = "SELECT a FROM Authority a")
-public class Authority implements Serializable {
+public class Authority implements Serializable,GrantedAuthority{
 	private static final long serialVersionUID = 1L;
 
 	/**

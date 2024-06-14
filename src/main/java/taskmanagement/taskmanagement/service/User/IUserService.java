@@ -1,4 +1,4 @@
-package taskmanagement.taskmanagement.service.IUserService;
+package taskmanagement.taskmanagement.service.User;
 
 public interface IUserService {
 	

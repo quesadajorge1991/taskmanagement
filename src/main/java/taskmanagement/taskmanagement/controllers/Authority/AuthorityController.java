@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import taskmanagement.taskmanagement.entity.User;
-import taskmanagement.taskmanagement.service.IUserService.UserService;
+import taskmanagement.taskmanagement.service.User.UserServiceImp;
 
 @Controller
 @RequestMapping(value = "/authority")
 public class AuthorityController {
 	
 	@Autowired
-	UserService userService;
+	UserServiceImp userService;
 	
 	
 	

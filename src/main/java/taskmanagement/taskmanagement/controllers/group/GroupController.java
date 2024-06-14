@@ -16,14 +16,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import taskmanagement.taskmanagement.entity.Groups;
 import taskmanagement.taskmanagement.entity.User;
-import taskmanagement.taskmanagement.service.Group.GroupService;
+import taskmanagement.taskmanagement.service.Group.GroupServiceImp;
 
 @Controller
 @RequestMapping(value = "/group")
 public class GroupController {
 
 	@Autowired
-	GroupService groupService;
+	GroupServiceImp groupService;
 
 	@GetMapping(value = "/groups")
 	public String groups(Model model) {
