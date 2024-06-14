@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 import taskmanagement.taskmanagement.entity.User;
-import taskmanagement.taskmanagement.service.UserService;
+import taskmanagement.taskmanagement.service.IUserService.UserService;
 
 @SpringBootTest
 class TaskmanagementApplicationTests {

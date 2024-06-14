@@ -1,4 +1,4 @@
-package taskmanagement.taskmanagement.service;
+package taskmanagement.taskmanagement.service.IUserService;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.repository.UserRepository;
-import taskmanagement.taskmanagement.service.IUserService.IUserService;
 
 @Service
 public class UserService implements IUserService {

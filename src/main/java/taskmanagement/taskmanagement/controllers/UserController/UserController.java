@@ -1,6 +1,6 @@
 package taskmanagement.taskmanagement.controllers.UserController;
 
-
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import taskmanagement.taskmanagement.entity.User;
-import taskmanagement.taskmanagement.service.UserService;
 import taskmanagement.taskmanagement.service.Group.GroupService;
+import taskmanagement.taskmanagement.service.IUserService.UserService;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -29,7 +28,7 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	GroupService groupService;
 
@@ -38,20 +37,20 @@ public class UserController {
 		model.addAttribute("users", userService.findAll());
 		return "/user/users";
 	}
-	
+
 	@GetMapping(value = "/getUsers")
 	public String getUsers(Model model) {
 		model.addAttribute("users", userService.findAll());
 		return "templateBase/Components/user/comboSelect2 :: users";
 
 	}
-	
+
 	@GetMapping(value = "/resetpass")
 	public String resetpass(Model model) {
 		model.addAttribute("users", userService.findAll());
 		return "/user/resetpass";
 	}
-	
+
 	@PostMapping("/resetPassword")
 	public @ResponseBody String resetPassword(@RequestParam(value = "userId") int userId,
 			@RequestParam(value = "password") String password) {
@@ -90,22 +89,34 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/addUser")
-	public String add_Usuario(@ModelAttribute("user") User user,@RequestParam(value = "") RedirectAttributes redirectAttributes) {
+	public String add_Usuario(@RequestParam(value = "selectedgroups") String selectedgroups[],
+			@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+		
+		
+		if (selectedgroups.length != 0) {
+			
+			for (String groupName : selectedgroups) {
+				
+			}
 
-		try {
+		} else {
 
-			User userr = new User(user.getUsername(), user.getPassword(), user.getEmail(), user.isEnabled(),
-					user.getDescription());
+			try {
 
-			userService.save(userr);
-			redirectAttributes.addFlashAttribute("msgtipo", "success");
-			redirectAttributes.addFlashAttribute("msgtitu", "Información");
-			redirectAttributes.addFlashAttribute("msgbody", "Usuario agregado correctamente ");
-			return "redirect:/user/users";
-		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute("msgtipo", "error");
-			redirectAttributes.addFlashAttribute("msgtitu", "Error");
-			redirectAttributes.addFlashAttribute("msgbody", "Error al agregar el usuario " + e.getLocalizedMessage());
+				User userr = new User(user.getUsername(), user.getPassword(), user.getEmail(), user.isEnabled(),
+						user.getDescription());
+
+				userService.save(userr);
+				redirectAttributes.addFlashAttribute("msgtipo", "success");
+				redirectAttributes.addFlashAttribute("msgtitu", "Información");
+				redirectAttributes.addFlashAttribute("msgbody", "Usuario agregado correctamente ");
+				return "redirect:/user/users";
+			} catch (Exception e) {
+				redirectAttributes.addFlashAttribute("msgtipo", "error");
+				redirectAttributes.addFlashAttribute("msgtitu", "Error");
+				redirectAttributes.addFlashAttribute("msgbody",
+						"Error al agregar el usuario " + e.getLocalizedMessage());
+			}
 		}
 
 		return "redirect:/user/users";
@@ -140,9 +151,9 @@ public class UserController {
 		try {
 
 			System.err.println(user.getUserId());
-			
-			userService.save(new User(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), user.isEnabled(),
-					user.getDescription()));
+
+			userService.save(new User(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(),
+					user.isEnabled(), user.getDescription()));
 			redirectAttributes.addFlashAttribute("msgbody",
 					"Usuario " + user.getUsername() + " modificado correctamente");
 			redirectAttributes.addFlashAttribute("msgtipo", "success");

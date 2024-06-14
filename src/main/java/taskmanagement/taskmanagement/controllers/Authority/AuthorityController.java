@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import taskmanagement.taskmanagement.entity.User;
-import taskmanagement.taskmanagement.service.UserService;
+import taskmanagement.taskmanagement.service.IUserService.UserService;
 
 @Controller
 @RequestMapping(value = "/authority")

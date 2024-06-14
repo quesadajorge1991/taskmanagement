@@ -69,9 +69,14 @@
 										<th th:text="${group.groupName}"></th>
 										<th th:text="${group.description}"></th>
 										<td>
-											<div class="custom-control custom-checkbox">
-												<input class="custom-control-input" type="checkbox" th:id="${group.id}">
-												<label th:for="${group.id}" class="custom-control-label"></label>
+										
+
+											<div class="icheck-success">
+												<input th:value="${group.groupName}" name="selectedgroups"
+													type="checkbox" th:id="${group.id}">
+												<label th:for="${group.id}">
+
+												</label>
 											</div>
 										</td>
 									</tr>
@@ -93,6 +98,11 @@
 
 
 					</div>
+
+
+
+
+
 
 					<div class="card-footer">
 						<a class="btn btn-primary waves-effect waves-light" th:href="@{/user/users}"><i
