@@ -19,12 +19,12 @@
 		<!-- /.login-logo -->
 		<div class="card card-outline card-primary">
 			<div class="card-header text-center">
-				<a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+				<a href="../../index2.html" class="h1"><b></b>Login</a>
 			</div>
 			<div class="card-body">
-				<p class="login-box-msg">Sign in to start your session</p>
+				<!--<p class="login-box-msg">Sign in to start your session</p> -->
 
-				<form th:action="@{/logincheck}" method="post">
+				<form th:action="@{/logincheck}" method="post"  >
 					<div th:if="${param.error!=null}">
 						<div class="alert alert-danger alert-dismissible text-center" role="alert">
 							<h5 th:text="#{Login.bad.credential}"></h5>

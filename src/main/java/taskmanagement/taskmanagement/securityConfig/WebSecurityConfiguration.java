@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import taskmanagement.taskmanagement.service.User.UserDetailsServiceImpl;
+
 @EnableWebSecurity // habilita la seguridad
 @EnableMethodSecurity(securedEnabled = true) // habilita la seguridad a nivel de metodos
 @Configuration // le dice a spring que es una clase de configuracion
@@ -24,6 +26,9 @@ public class WebSecurityConfiguration {
 
 	@Autowired
 	DataSource dataSource;
+
+	@Autowired
+	UserDetailsServiceImpl userDetailsService;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,7 +46,7 @@ public class WebSecurityConfiguration {
 								e.printStackTrace();
 							}
 						})
-				.logout().logoutUrl("/logout").logoutSuccessUrl("/index").invalidateHttpSession(true).and()
+				.logout().logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true).and()
 
 				.build();
 
@@ -50,12 +55,12 @@ public class WebSecurityConfiguration {
 	@Autowired
 	public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select usernamee,password,enabled from users where usernamee = ?")
+				.usersByUsernameQuery("select username,password,enabled from users where username = ?")
 				.authoritiesByUsernameQuery(
-						"select username,authority from authorities INNER JOIN   users on  authorities.username=users.id where users.usernamee=? ")
+						"select username,authority from authorities INNER JOIN users on authorities.user_id=users.user_id where users.username=? ")
 
 				.groupAuthoritiesByUsername(
-						"select g.id, g.group_name, ga.authority from groups g, group_members gm, group_authorities ga where gm.usernamee = ? and g.id = ga.group_id and g.id = gm.group_id");
+						"select g.id, g.group_name, ga.authority from groups g, group_members gm, group_authorities ga where gm.username = ? and g.id = ga.group_id and g.id = gm.group_id");
 
 	}
 

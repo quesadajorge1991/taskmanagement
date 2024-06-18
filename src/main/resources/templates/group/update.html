@@ -7,7 +7,7 @@
 	<title>Insert title here</title>
 </head>
 
-<body>
+<body onload="loadCheckBoxGroup();">
 
 
 	<div layout:fragment="content">
@@ -33,6 +33,49 @@
 						</div>
 
 
+
+
+						<!-- GRUPOS -->
+
+						<table class="table table-bordered table-striped example2">
+							<thead>
+								<tr>
+									<th>Permiso</th>
+									<th>Descripción</th>
+									<th>Seleccionar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="autority:${autorities.entrySet()}">
+									<td th:text="${autority.key}"></td>
+									<td th:text="${autority.value}"></td>
+									<td>
+
+										<div class="icheck-success">
+											<input th:value="${autority.key}" name="selectedauthorities" type="checkbox"
+												th:id="${autority.key}"> <label th:for="${autority.key}"></label>
+										</div>
+
+									</td>
+								</tr>
+
+
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Rendering engine</th>
+									<th>Browser</th>
+									<th>Platform(s)</th>
+
+								</tr>
+							</tfoot>
+						</table>
+
+						<!-- FIN GRUPOS -->
+
+
+
+
 					</div>
 
 
@@ -41,8 +84,9 @@
 
 				<div class="card-footer">
 					<a class="btn btn-primary waves-effect waves-light" th:href="@{/group/groups}"><i
-							class="fa fa-users"></i> Cancelar</a>
-					<button type="button" onclick="addGroup();" class="btn btn-primary waves-effect waves-light">
+							class="fa fa-users"></i>
+						Cancelar</a>
+					<button type="submit" class="btn btn-primary waves-effect waves-light">
 						<i class="fa fa-save"></i> Aceptar
 					</button>
 
@@ -52,8 +96,46 @@
 		</div>
 
 
+
+
+
 		<script th:inline="javascript" charset="utf-8">
 
+
+			var autoritiesByGroup = /*[[${autoritiesByGroup}]]*/[];  /* lista de objtos de tipo GrantedAuthority que contiene todos los permisos otorgado a un grupo */
+			var autorities = /*[[${autoritiesKeys}]]*/[];  /* lista string que contiene todos los permisos establecidos en el sistema */
+			/*loadCheckBox(valuesCheckBox,autoritiesModel)*/
+			loadCheckBoxGroup(autoritiesByGroup, autorities);
+
+
+
+
+
+
+			/* habilita los check segun los permisos que posea el grupo seleccionado */
+			function loadCheckBoxs() {
+				/*<![CDATA[*/
+				var autoritiesByGroup = /*[[${autoritiesByGroup}]]*/[];  /* */
+				var autorities = /*[[${autorities}]]*/[];  /* */
+				let keys = Object.keys(autorities) /*obtiene las key del objeto autorities(proviene de la controladora)*/
+				/*]]>*/
+
+				var permisos = keys;
+				//checkbox.checked = true;
+
+				for (let i = 0; i < permisos.length; i++) {
+					console.log('Iteration permisos ' + permisos[i]);
+					var checkbox = document.getElementById(permisos[i]);
+					for (let j = 0; j < autoritiesByGroup.length; j++) {
+						if (autoritiesByGroup[j].authority == permisos[i]) {
+							checkbox.checked = true;
+						}
+					}
+
+
+				}
+
+			}
 
 			function addGroup() {
 				var Toast = Swal.mixin({

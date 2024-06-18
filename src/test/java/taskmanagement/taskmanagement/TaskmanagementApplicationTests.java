@@ -14,7 +14,10 @@ import org.springframework.security.provisioning.GroupManager;
 
 import taskmanagement.taskmanagement.entity.Authority;
 import taskmanagement.taskmanagement.entity.User;
+import taskmanagement.taskmanagement.repository.GroupAuthoritiesRepository;
 import taskmanagement.taskmanagement.repository.GroupRepository;
+import taskmanagement.taskmanagement.repository.GroupsMembersRepository;
+import taskmanagement.taskmanagement.repository.UserRepository;
 import taskmanagement.taskmanagement.service.Group.GroupServiceImp;
 import taskmanagement.taskmanagement.service.User.UserServiceImp;
 
@@ -23,6 +26,9 @@ class TaskmanagementApplicationTests {
 
 	@Autowired
 	UserServiceImp userService;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	GroupServiceImp serviceImp;
@@ -32,6 +38,12 @@ class TaskmanagementApplicationTests {
 
 	@Autowired
 	GroupServiceImp groupServiceImp;
+	
+	@Autowired
+	GroupAuthoritiesRepository authoritiesRepository;
+	
+	@Autowired
+	GroupsMembersRepository groupsMembersRepository;
 
 	@Test
 	void contextLoads() {
@@ -43,7 +55,7 @@ class TaskmanagementApplicationTests {
 		authorities.add(new Authority("UPDATE"));
 
 		// groupServiceImp.createGroup("MIGRUPO", authorities);
-		// groupServiceImp.deleteGroup("MIGRUPO");
+	//	 groupServiceImp.deleteGroup("MIGRUPO");
 		GrantedAuthority authority = new GrantedAuthority() {
 
 			@Override
@@ -52,8 +64,17 @@ class TaskmanagementApplicationTests {
 				return "READ";
 			}
 		};
-		groupServiceImp.removeGroupAuthority("erwerwex", authority);
+		
+		//groupServiceImp.addGroupAuthority("Migrupo", authority);
+	//	groupServiceImp.removeGroupAuthority("MIGRUPO", authority);
 		// System.out.println("SIZE " + );
+		
+		//System.out.println(authoritiesRepository.findByAuthority("READ").size());
+	//	groupServiceImp.removeUserFromGroup("admin", "MIGRUPO");
+		
+	//System.out.println(groupServiceImp.findUsersInGroup("MIGRUPO").size());
+		
+		//System.out.println(groupsMembersRepository.findGroupsByUsername("jeni").size());
 
 	}
 

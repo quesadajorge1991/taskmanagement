@@ -16,5 +16,13 @@ public interface GroupRepository extends JpaRepository<Groups, Integer> {
 	List<String> findAllGroups();
 	
 	
+	@Query(value = "SELECT group_name FROM groups g JOIN group_members gm WHERE gm.group_id=g.id and gm.username=?1 ",nativeQuery = true)
+	List<String> findNamesGroupsByUsername(String username);
+	
+	
+	
+	
+	
+	
 	
 }

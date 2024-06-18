@@ -1,11 +1,17 @@
 package taskmanagement.taskmanagement.service.Group;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import taskmanagement.taskmanagement.controllers.util.Permisos;
+import taskmanagement.taskmanagement.entity.Authority;
 import taskmanagement.taskmanagement.entity.GroupAuthorities;
 import taskmanagement.taskmanagement.entity.GroupMembers;
 import taskmanagement.taskmanagement.entity.Groups;
@@ -94,28 +100,37 @@ public class GroupServiceImp implements GroupService, ServiceBase<Groups> {
 
 	@Override
 	public List<GrantedAuthority> findGroupAuthorities(String groupName) {
-		/* List<GrantedAuthority> list = new ArrayList<GrantedAuthority>(); */
-		return null;
+		List<String> autoritieStrings = groupAuthoritiesRepository
+				.findGroupAuthorities(findByGroupName(groupName).getId());
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+		for (int i = 0; i < autoritieStrings.size(); i++) {
+			grantedAuthorities.add(new Authority(autoritieStrings.get(i)));
+		}
+		return grantedAuthorities;
+
+	}
+
+	public List<String> findGroupAuthoritiesByGroup(String groupName) {
+		return groupAuthoritiesRepository.findGroupAuthorities(findByGroupName(groupName).getId());
+
 	}
 
 	@Override
 	public List<String> findUsersInGroup(String groupName) {
-		/* List<String> listuser = new ArrayList<String>(); */
-
-		return null;
+		return groupsMembersRepository.findUsersInGroup(findByGroupName(groupName).getId());
 	}
 
 	@Override
 	public void removeGroupAuthority(String groupName, GrantedAuthority authority) {
-		Groups groups = findByGroupName(groupName);
-		groupAuthoritiesRepository.delete(new GroupAuthorities(authority.getAuthority(), new Groups(groups.getId())));
-		// groupAuthoritiesRepository.delete(new );
+		/* no implementado */
 
 	}
 
 	@Override
 	public void removeUserFromGroup(String username, String groupName) {
-		// TODO Auto-generated method stub
+		Groups groups = findByGroupName(groupName);
+		GroupMembers groupMembers = groupsMembersRepository.findByUsernameGroup(username, groups.getId());
+		groupsMembersRepository.delete(groupMembers);
 
 	}
 
@@ -129,6 +144,36 @@ public class GroupServiceImp implements GroupService, ServiceBase<Groups> {
 	@Override
 	public Groups findByGroupName(String findByGroupName) {
 		return groupRepository.findByGroupName(findByGroupName);
+	}
+
+	@Override
+	public void removeGroupAuthority(String groupName) {
+		Groups group = findByGroupName(groupName);
+		List<GroupAuthorities> listGroupAuthorityByGroup = groupAuthoritiesRepository.findByGroupId(group.getId());
+		for (int i = 0; i < listGroupAuthorityByGroup.size(); i++) {
+			groupAuthoritiesRepository.delete(listGroupAuthorityByGroup.get(i));
+		}
+
+	}
+
+	@Override
+	public List<GroupMembers> findGroupsByUsername(String username) {
+		return groupsMembersRepository.findByUsername(username);
+	}
+
+	@Override
+	public List<String> getKeys(HashMap<String, String> map) {
+		List<String> listpermisoStrings = new ArrayList<String>();
+		Set<String> keySet = map.keySet();
+		for (String string : keySet) {
+			listpermisoStrings.add(string);
+		}
+		return listpermisoStrings;
+	}
+
+	@Override
+	public List<String> findNamesGroupsByUsername(String username) {
+		return groupRepository.findNamesGroupsByUsername(username);
 	}
 
 }

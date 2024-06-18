@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserServiceImp implements IUserService {
@@ -36,9 +38,15 @@ public class UserServiceImp implements IUserService {
 
 	@Override
 	public String encodePassword(String password) {
-		/*PasswordEncoder encoder = new BCryptPasswordEncoder();
-		return encoder.encode(password);*/
-		return "sdfdf";
+
+		PasswordEncoder encoder = new BCryptPasswordEncoder();
+		return encoder.encode(password);
+
+	}
+
+	@Override
+	public User findByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 
 }

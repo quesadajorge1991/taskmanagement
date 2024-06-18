@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{templateBase/BaseAdminLTE}">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{templateBase/BaseAdminLTE}">
 
 <head>
-	<meta charset="utf-8">
-	<title>Insert title here</title>
+<meta charset="utf-8">
+<title>Insert title here</title>
 </head>
 
-<body>
+<body onload="loadGroupsNameByUsername();">
 
 
 	<div layout:fragment="content">
 		<div class="card card-primary">
 			<div class="card-header">
-				<h3 class="card-title">Agregar usuario</h3>
+				<h3 class="card-title">Modificar usuario</h3>
 			</div>
 			<!-- /.card-header -->
 			<!-- form start -->
@@ -22,27 +24,29 @@
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<input type="hidden" th:field="*{userId}">
 						<div class="form-group">
-							<label class="login2">Usuario </label> <input name="firstname" type="text"
-								class="form-control" placeholder="Usuario" th:field="*{username}">
+							<label class="login2">Usuario </label> <input name="firstname"
+								type="text" class="form-control" placeholder="Usuario"
+								th:field="*{username}">
 						</div>
 						<div class="form-group">
-							<label class="login2">Email </label> <input name="firstname" type="email"
-								class="form-control" placeholder="Usuario" th:field="*{email}">
+							<label class="login2">Email </label> <input name="firstname"
+								type="email" class="form-control" placeholder="Usuario"
+								th:field="*{email}">
 						</div>
 
 						<div class="form-group">
 							<div class="form-group res-mg-t-15">
 								<label class="login2">Descripción </label>
-								<textarea th:field="*{description}" name="descripcion" class="form-control"
-									id="descripcion" placeholder="Descripción"></textarea>
+								<textarea th:field="*{description}" name="descripcion"
+									class="form-control" id="descripcion" placeholder="Descripción"></textarea>
 							</div>
 						</div>
 						<div class="form-group">
 
 							<div class="custom-control custom-checkbox">
-								<input th:field="*{enabled}" class="custom-control-input" type="checkbox"
-									id="customCheckbox2" checked> <label for="customCheckbox2"
-									class="custom-control-label">Habilitar</label>
+								<input th:field="*{enabled}" class="custom-control-input"
+									type="checkbox" id="customCheckbox2" checked> <label
+									for="customCheckbox2" class="custom-control-label">Habilitar</label>
 							</div>
 
 
@@ -50,20 +54,75 @@
 					</div>
 
 
+
+					<!-- GRUPOS -->
+
+					<table class="table table-bordered table-striped example2">
+						<thead>
+							<tr>
+								<th>id</th>
+								<th>Nombre</th>
+								<th>Descripción</th>
+								<th>Seleccionar</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr th:each="group:${groups}">
+								<td th:text="${group.id}"></td>
+								<td th:text="${group.groupName}"></td>
+								<td th:text="${group.description}"></td>
+								<td>
+
+
+									<div class="icheck-success">
+										<input th:value="${group.groupName}"
+											name="selectedauthorities" type="checkbox"
+											th:id="${group.groupName}"> <label
+											th:for="${group.groupName}"></label>
+									</div>
+								</td>
+							</tr>
+
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Rendering engine</th>
+								<th>Browser</th>
+								<th>Platform(s)</th>
+								<th>Engine version</th>
+							</tr>
+						</tfoot>
+					</table>
+
+					<!-- FIN GRUPOS -->
+
+
+
 				</div>
 				<!-- /.card-body -->
-
 				<div class="card-footer">
-					<a class="btn btn-primary waves-effect waves-light" th:href="@{/user/users}"><i
-							class="fa fa-users"></i> Cancelar</a>
-					<button type="submit" class="btn btn-primary waves-effect waves-light">
+					<a class="btn btn-primary waves-effect waves-light"
+						th:href="@{/user/users}"><i class="fa fa-users"></i> Cancelar</a>
+					<button type="submit"
+						class="btn btn-primary waves-effect waves-light">
 						<i class="fa fa-save"></i> Aceptar
 					</button>
-
-
 				</div>
 			</form>
 		</div>
+
+
+		
+
+		<script th:inline="javascript" charset="utf-8">
+			/* habilita los check segun los permisos que posea el grupo seleccionado */
+			function loadGroupsNameByUsername() {
+				var autoritiesByGroup = /*[[${groupNameByUser}]]*/[]; /* lista de objtos de tipo GrantedAuthority que contiene todos los permisos otorgado a un grupo */
+				var grupos = /*[[${groupsName}]]*/[]; /* lista string que contiene todos los permisos establecidos en el sistema */
+				loadCheckBoxGroup(autoritiesByGroup, grupos);
+			}
+		</script>
 
 
 	</div>

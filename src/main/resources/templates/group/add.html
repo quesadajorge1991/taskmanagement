@@ -35,13 +35,54 @@
 					</div>
 
 
+					<!-- GRUPOS -->
+
+					<table class="table table-bordered table-striped example2">
+						<thead>
+							<tr>
+								<th>Permiso</th>
+								<th>Descripción</th>
+								<th>Seleccionar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="autority:${autorities.entrySet()}">
+								<td th:text="${autority.key}"></td>
+								<td th:text="${autority.value}">
+								</td>
+								<td>
+									<div class="icheck-success">
+										<input th:value="${autority.key}" name="selectedauthorities" type="checkbox"
+											th:id="${autority}">
+										<label th:for="${autority}">
+
+										</label>
+									</div>
+								</td>
+							</tr>
+
+
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Rendering engine</th>
+								<th>Browser</th>
+								<th>Platform(s)</th>
+
+							</tr>
+						</tfoot>
+					</table>
+
+					<!-- FIN GRUPOS -->
+
 				</div>
 				<!-- /.card-body -->
+
 
 				<div class="card-footer">
 					<a class="btn btn-primary waves-effect waves-light" th:href="@{/group/groups}"><i
 							class="fa fa-users"></i> Cancelar</a>
-					<button type="button" onclick="addGroup();" class="btn btn-primary waves-effect waves-light">
+					<button type="submit" onclick="addGroup();" class="btn btn-primary waves-effect waves-light">
 						<i class="fa fa-save"></i> Aceptar
 					</button>
 
@@ -54,6 +95,8 @@
 		<script th:inline="javascript" charset="utf-8">
 
 
+
+
 			function addGroup() {
 				var Toast = Swal.mixin({
 					toast: true,
@@ -63,8 +106,10 @@
 				});
 
 				var groupName = $('#groupName').val();
-				var description = $('#description').val()
-
+				var description = $('#description').val();
+				var selectedauthorities = document.getElementsByName("selectedauthorities");
+				var valor = selectedauthorities.val();
+				alert(valor);
 
 				var group = {
 					groupName: groupName,
@@ -77,7 +122,7 @@
 						url: '/group/addGroup',
 						dataType: 'json',
 						method: 'post',
-						data: JSON.stringify(group),
+						data: JSON.stringify(group), valor,
 						contentType: 'application/json',
 						success: function (data) {
 							Toast.fire({

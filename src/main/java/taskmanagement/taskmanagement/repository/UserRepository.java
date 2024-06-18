@@ -10,5 +10,7 @@ import taskmanagement.taskmanagement.entity.User;
 @Repository
 @Qualifier("user")
 public interface UserRepository extends JpaRepository<User, Integer> {
+	
+	User findByUsername(String username);
 
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -15,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name="users")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
