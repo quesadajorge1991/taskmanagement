@@ -57,7 +57,8 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/changePass")
-	public String changePass() {
+	public String changePass(Model model) {
+		model.addAttribute("user", new User());
 		return "/user/profile";
 	}
 
