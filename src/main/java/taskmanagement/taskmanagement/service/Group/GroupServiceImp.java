@@ -2,15 +2,14 @@ package taskmanagement.taskmanagement.service.Group;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import taskmanagement.taskmanagement.controllers.util.Permisos;
 import taskmanagement.taskmanagement.entity.Authority;
 import taskmanagement.taskmanagement.entity.GroupAuthorities;
 import taskmanagement.taskmanagement.entity.GroupMembers;
@@ -128,9 +127,10 @@ public class GroupServiceImp implements GroupService, ServiceBase<Groups> {
 
 	@Override
 	public void removeUserFromGroup(String username, String groupName) {
-		Groups groups = findByGroupName(groupName);
-		GroupMembers groupMembers = groupsMembersRepository.findByUsernameGroup(username, groups.getId());
-		groupsMembersRepository.delete(groupMembers);
+		List<GroupMembers> groupMembers = groupsMembersRepository.findByUsername(username);
+		for (GroupMembers gm : groupMembers) {
+			groupsMembersRepository.delete(gm);
+		}
 
 	}
 
@@ -174,6 +174,68 @@ public class GroupServiceImp implements GroupService, ServiceBase<Groups> {
 	@Override
 	public List<String> findNamesGroupsByUsername(String username) {
 		return groupRepository.findNamesGroupsByUsername(username);
+	}
+
+	@Override
+	public void deleteByGroupId(int id, String authority) {
+		groupAuthoritiesRepository.deleteByGroupId(id, authority);
+
+	}
+
+	@Override
+	public List<GroupAuthorities> findByAuthority(String authority) {
+		return groupAuthoritiesRepository.findByAuthority(authority);
+	}
+
+	@Override
+	public List<String> findGroupAuthorities(int idgroup) {
+		return groupAuthoritiesRepository.findGroupAuthorities(idgroup);
+
+	}
+
+	@Override
+	public List<GroupAuthorities> findByGroupId(int idgroup) {
+		return groupAuthoritiesRepository.findByGroupId(idgroup);
+
+	}
+
+	@Override
+	public GroupMembers findByUsernameGroup(String username, int idgroup) {
+		return groupsMembersRepository.findByUsernameGroup(username, idgroup);
+	}
+
+	@Override
+	public List<String> findUsersInGroup(int idgroup) {
+		return groupsMembersRepository.findUsersInGroup(idgroup);
+	}
+
+	@Override
+	public List<GroupMembers> findByUsername(String username) {
+		return groupsMembersRepository.findByUsername(username);
+	}
+
+	public void removeGroupByUsername(String username) {
+		List<String> grupoDeUsuarioString = findNamesGroupsByUsername(username);
+		for (String groupName : grupoDeUsuarioString) {
+			removeUserFromGroup(username, groupName);
+		}
+
+	}
+
+	@Override
+	public void addUserToGroup(String username, String selectedgroups[]) {
+		/* eliminar todos los grupos de un usuario */
+
+		/* validar que el username pertenesca al menos un grupo */
+		removeGroupByUsername(username);
+
+		/* agregar los permisos seleccionados al usuario */
+		if (selectedgroups != null) {
+			for (String groupName : selectedgroups) {
+				addUserToGroup(username, groupName);
+			}
+		}
+
 	}
 
 }

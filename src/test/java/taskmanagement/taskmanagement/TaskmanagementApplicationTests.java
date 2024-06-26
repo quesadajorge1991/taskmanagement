@@ -74,7 +74,7 @@ class TaskmanagementApplicationTests {
 		
 	//System.out.println(groupServiceImp.findUsersInGroup("MIGRUPO").size());
 		
-		//System.out.println(groupsMembersRepository.findGroupsByUsername("jeni").size());
+		System.out.println(userService.checkPasswordOld("admind", "$2a$10$QTWoUnhRhfr4rOn2yk2Ib.CE7tu8DfPriUiZBkH7FoOW3mltREgbG"));
 
 	}
 

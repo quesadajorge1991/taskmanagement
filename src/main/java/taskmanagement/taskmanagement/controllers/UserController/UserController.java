@@ -1,17 +1,16 @@
 package taskmanagement.taskmanagement.controllers.UserController;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.Locale;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.validation.Valid;
 import taskmanagement.taskmanagement.controllers.util.Permisos;
 import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.service.Group.GroupServiceImp;
@@ -35,10 +35,14 @@ public class UserController {
 
 	@Autowired
 	GroupServiceImp groupService;
+	
+	@Autowired
+    private MessageSource messageSource;
 
-	//@PreAuthorize("hasAuthority('ADMIN')")
+	// @PreAuthorize("hasAuthority('ADMIN')")
 	@GetMapping(value = "/users")
 	public String users(Model model) {
+		model.addAttribute("title", messageSource.getMessage("N.user.users", null, Locale.getDefault()));
 		model.addAttribute("users", userService.findAll());
 		return "/user/users";
 	}
@@ -52,12 +56,14 @@ public class UserController {
 
 	@GetMapping(value = "/resetpass")
 	public String resetpass(Model model) {
+		model.addAttribute("title", messageSource.getMessage("N.user.resetPass", null, Locale.getDefault()));
 		model.addAttribute("users", userService.findAll());
 		return "/user/resetpass";
 	}
 
-	@GetMapping(value = "/changePass")
+	@GetMapping(value = "/profile")
 	public String changePass(Model model) {
+		model.addAttribute("title", messageSource.getMessage("N.user.profile", null, Locale.getDefault()));
 		model.addAttribute("user", new User());
 		return "/user/profile";
 	}
@@ -69,15 +75,10 @@ public class UserController {
 
 		User user = userService.findById(userId);
 
-		System.err.println(user.getUsername());
-
 		try {
-			User usuario = userService.findById(userId);
-			usuario.setPassword(userService.encodePassword(user.getPassword()));
-			usuario.setEnabled(user.isEnabled());
-			usuario.setDescription(user.getDescription());
 
-			userService.save(usuario);
+			userService.save(new User(user.getUserId(), user.getUsername(), userService.encodePassword(password),
+					user.getEmail(), user.isEnabled(), user.getDescription()));
 
 			jsono.put("msgtype", "success");
 			jsono.put("msgtitle", "Información");
@@ -92,68 +93,101 @@ public class UserController {
 		return jsono.toString();
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/changePassword")
 	public @ResponseBody String changePassword(@RequestParam(value = "username") String username,
-			@RequestParam(value = "password") String password) {
+			@RequestParam(value = "passwordold") String passwordold,@RequestParam(value = "passwordnew") String passwordnew) {
 		JSONObject jsono = new JSONObject();
 		User user = userService.findByUsername(username);
-		try {
+		
+		/*verificar que la pass anterior coincida con la proporcionada en el campo pass anterior*/
+		if (userService.checkPasswordOld(passwordold, user.getPassword())) { 
+			try {
 
-			user.setPassword(userService.encodePassword(password));
-			user.setEnabled(user.isEnabled());
-			user.setDescription(user.getDescription());
+				user.setPassword(userService.encodePassword(passwordnew));
+				user.setEnabled(user.isEnabled());
+				user.setDescription(user.getDescription());
 
-			userService.save(user);
+				userService.save(user);
 
-			jsono.put("msgtype", "success");
-			jsono.put("msgtitle", "Información");
-			jsono.put("msgbody", "El usuario " + user.getUsername() + " cambió la contraseña correctamente");
-		} catch (Exception e) {
-			// TODO: handle exception
+				jsono.put("msgtype", "success");
+				jsono.put("msgtitle", "Información");
+				jsono.put("msgbody", "El usuario " + user.getUsername() + " cambió la contraseña correctamente");
+			} catch (Exception e) {
+				// TODO: handle exception
+				jsono.put("msgtype", "error");
+				jsono.put("msgtitle", "Error");
+				jsono.put("msgbody", "Error al actualizar la contraseña al usuario" + user.getUsername());
+			}
+		}else {
+			/*  */
 			jsono.put("msgtype", "error");
 			jsono.put("msgtitle", "Error");
-			jsono.put("msgbody", "Error al actualizar la contraseña al usuario" + user.getUsername());
+			jsono.put("msgbody", "La contraseña anterior es incorrecta");
 		}
+		
+		
+	
 
 		return jsono.toString();
 	}
 
 	@GetMapping(value = "/add")
 	public String add(Model model) {
+		model.addAttribute("title", messageSource.getMessage("N.user.adduser", null, Locale.getDefault()));
 		model.addAttribute("user", new User());
 		model.addAttribute("groups", groupService.findAll());
 		return "/user/add";
 	}
 
-	@PostMapping(value = "/addUser")
-	public String add_Usuario(@RequestParam(value = "selectedgroups") String selectedgroups[],
-			@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+	@PostMapping("/addUser")
+	public String add_Usuario(@ModelAttribute("user") @Valid User user, BindingResult result, Model model,
+			@RequestParam(value = "selectedgroups", required = false) String selectedgroups[],
+			RedirectAttributes redirectAttributes) {
 
-		if (selectedgroups.length != 0) {
-			try {
+		if (result.hasErrors()) {
+			model.addAttribute("groups", groupService.findAll());
+			model.addAttribute("groupsName", groupService.findAllGroups());
+			model.addAttribute("groupNameByUser", groupService.findNamesGroupsByUsername(user.getUsername()));
+			return "/user/update";
+		}
 
-				User userr = new User(user.getUsername(), userService.encodePassword(user.getPassword()),
-						user.getEmail(), user.isEnabled(), user.getDescription());
+		try {
+	    		if (user.getUserId() == 0) { /* si el id es 0 se add */
+	    			if(userService.findByUsername(user.getUsername())==null) {
+	    				userService.save(new User(user.getUsername(), userService.encodePassword(user.getPassword()),
+								user.getEmail(), user.isEnabled(), user.getDescription()));
+						groupService.addUserToGroup(user.getUsername(),
+								selectedgroups); /* se le agrega todos los grupos seleccionados al usuario */
+						redirectAttributes.addFlashAttribute("msgtype", "success");
+						redirectAttributes.addFlashAttribute("msgtitle", "Información");
+						redirectAttributes.addFlashAttribute("msgbody", "Usuario agregado correctamente ");
+						return "redirect:/user/users";
+	    			}else {
+	    				redirectAttributes.addFlashAttribute("msgtype", "error");
+						redirectAttributes.addFlashAttribute("msgtitle", "Error");
+						redirectAttributes.addFlashAttribute("msgbody", "El usuario que intenta agregar ya existe ");
+	    			}
+				
+				} else {
+					User usuario = userService.findById(user.getUserId());
+					userService.save(new User(usuario.getUserId(), user.getUsername(), usuario.getPassword(),
+							user.getEmail(), user.isEnabled(), user.getDescription()));
 
-				userService.save(userr);
+					groupService.addUserToGroup(user.getUsername(), selectedgroups);
 
-				for (String groupName : selectedgroups) {
-					groupService.addUserToGroup(user.getUsername(), groupName);
+					redirectAttributes.addFlashAttribute("msgbody",
+							"Usuario " + user.getUsername() + " modificado correctamente");
+					redirectAttributes.addFlashAttribute("msgtype", "success");
+					redirectAttributes.addFlashAttribute("msgtitle", "Información");
 				}
-				redirectAttributes.addFlashAttribute("msgtype", "success");
-				redirectAttributes.addFlashAttribute("msgtitle", "Información");
-				redirectAttributes.addFlashAttribute("msgbody", "Usuario agregado correctamente ");
-				return "redirect:/user/users";
-			} catch (Exception e) {
-				redirectAttributes.addFlashAttribute("msgtype", "error");
-				redirectAttributes.addFlashAttribute("msgtitle", "Error");
-				redirectAttributes.addFlashAttribute("msgbody",
-						"Error al agregar el usuario " + e.getLocalizedMessage());
-			}
-		} else {
+		
+
+		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("msgtype", "error");
 			redirectAttributes.addFlashAttribute("msgtitle", "Error");
-			redirectAttributes.addFlashAttribute("msgbody", "Error al agregar el usuario ");
+			redirectAttributes.addFlashAttribute("msgbody", "Error al agregar el usuario " + e.getLocalizedMessage());
+			System.out.println(e.getLocalizedMessage());
 
 		}
 
@@ -178,6 +212,7 @@ public class UserController {
 
 	@GetMapping(value = "/update/{id}")
 	public String update(Model model, @PathVariable(value = "id") int id) {
+		model.addAttribute("title", messageSource.getMessage("N.user.updateuser", null, Locale.getDefault()));
 		User usuarios = userService.findById(id);
 		model.addAttribute("user", usuarios);
 		model.addAttribute("groups", groupService.findAll());
@@ -191,10 +226,9 @@ public class UserController {
 
 		try {
 
-			System.err.println(user.getUserId());
-
 			userService.save(new User(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(),
 					user.isEnabled(), user.getDescription()));
+
 			redirectAttributes.addFlashAttribute("msgbody",
 					"Usuario " + user.getUsername() + " modificado correctamente");
 			redirectAttributes.addFlashAttribute("msgtype", "success");

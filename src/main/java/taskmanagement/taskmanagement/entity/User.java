@@ -2,10 +2,14 @@ package taskmanagement.taskmanagement.entity;
 
 import java.io.Serializable;
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,39 +19,44 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  */
 @Entity
-@Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+@Table(name = "users")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
 public class User implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="user_id")
+	@Column(name = "user_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 
 	@Lob
+	@NotEmpty(message = "{Form.Valid.User.Description}")
 	private String description;
-	
+
 	private boolean enabled;
 
+    @NotEmpty(message = "{Form.Valid.User.Email}")
+    @Email(message = "{Form.Valid.User.Email.valid}")
 	private String email;
 
+  
 	private String password;
 
+    @NotEmpty(message = "{Form.Valid.User.Username}")
 	private String username;
 
-	//bi-directional many-to-one association to Authority
+	// bi-directional many-to-one association to Authority
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
 	private List<Authority> authorities;
 
-	//bi-directional many-to-one association to Comment
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Comment
+	@OneToMany(mappedBy = "user")
 	private List<Comment> comments;
 
-	//bi-directional many-to-one association to Task
-	@OneToMany(mappedBy="user")
+	// bi-directional many-to-one association to Task
+	@OneToMany(mappedBy = "user")
 	private List<Task> tasks;
 
 	public User() {
@@ -56,7 +65,7 @@ public class User implements Serializable, UserDetails {
 	public int getUserId() {
 		return this.userId;
 	}
-	
+
 	public User(int userId, String username, String password, String email, boolean enabled, String description) {
 		super();
 		this.userId = userId;
@@ -127,9 +136,6 @@ public class User implements Serializable, UserDetails {
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
 	}
-
-
-
 
 	public List<Comment> getComments() {
 		return this.comments;

@@ -1,4 +1,4 @@
-package taskmanagement.taskmanagement.securityConfig;
+package taskmanagement.taskmanagement.config.security;
 
 import javax.sql.DataSource;
 
@@ -15,28 +15,37 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import taskmanagement.taskmanagement.service.User.UserDetailsServiceImpl;
-
 @EnableWebSecurity // habilita la seguridad
 @EnableMethodSecurity(securedEnabled = true) // habilita la seguridad a nivel de metodos
 @Configuration // le dice a spring que es una clase de configuracion
 public class WebSecurityConfiguration {
 
-	/* /*auth.anyRequest().authenticated(); */
-
 	@Autowired
 	DataSource dataSource;
 
-	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+	// @Autowired
+	// UserDetailsServiceImpl userDetailsService;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf().disable().headers().frameOptions().disable().and()
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/**", "/templates/templateBase/**").permitAll()
-						.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+		return http.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/dist/**", "/customFunction/**", "/plugins/**", "/error/**",
+								"/templates/templateBase/**")
+						.permitAll()
 
-				).formLogin(
+						.requestMatchers("/").authenticated().requestMatchers("/user/**", "/group/**")
+						.hasAnyAuthority("ADMIN", "READ", "CREATE", "UPDATE", "DELETE")
+
+				/* .anyRequest().authenticated() */
+				)
+
+				.exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedPage("/error/403")) // Configura
+																											// la página
+																											// de error
+																											// personalizada
+
+				.formLogin(
 
 						formlogin -> {
 							try {
@@ -46,7 +55,7 @@ public class WebSecurityConfiguration {
 								e.printStackTrace();
 							}
 						})
-				.logout().logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true).and()
+				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true))
 
 				.build();
 

@@ -23,12 +23,14 @@ public class Permisos {
 
 		HashMap<String, String> hashMap = new HashMap<String, String>();
 		hashMap.put("ADMIN", "Permiso Administrador full del sistema");
+		hashMap.put("READ", "PermisoTarea");
 		hashMap.put("CREATE", "Permiso Crear");
 		hashMap.put("UPDATE", "Permiso Modificar");
 		hashMap.put("DELETE", "Permiso Eliminar");
 		hashMap.put("CATEGORY", "Permiso categoria");
 		hashMap.put("COMMENT", "Permiso Comentario");
 		hashMap.put("TASK", "PermisoTarea");
+	
 		
 		
 		

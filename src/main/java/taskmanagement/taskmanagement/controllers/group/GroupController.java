@@ -1,29 +1,21 @@
 package taskmanagement.taskmanagement.controllers.group;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.Locale;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import taskmanagement.taskmanagement.controllers.util.Permisos;
 import taskmanagement.taskmanagement.entity.Authority;
 import taskmanagement.taskmanagement.entity.Groups;
-import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.service.Group.GroupServiceImp;
 
 @Controller
@@ -32,15 +24,20 @@ public class GroupController {
 
 	@Autowired
 	GroupServiceImp groupService;
+	
+	@Autowired
+    private MessageSource messageSource;
 
 	@GetMapping(value = "/groups")
 	public String groups(Model model) {
+		model.addAttribute("title", messageSource.getMessage("N.group.groups", null, Locale.getDefault()));
 		model.addAttribute("groups", groupService.findAll());
 		return "/group/groups";
 	}
 
 	@GetMapping(value = "/add")
 	public String add(Model model) {
+		model.addAttribute("title", messageSource.getMessage("N.group.addgroup", null, Locale.getDefault()));
 		model.addAttribute("group", new Groups());
 		model.addAttribute("autorities", Permisos.getListauthorities());
 		return "/group/add";
@@ -114,6 +111,7 @@ public class GroupController {
 
 	@GetMapping(value = "/update/{id}")
 	public String update(Model model, @PathVariable(value = "id") int id) {
+		model.addAttribute("title", messageSource.getMessage("N.group.updategroup", null, Locale.getDefault()));
 		Groups group = groupService.findById(id);
 		model.addAttribute("group", group);
 		model.addAttribute("autorities", Permisos.getListauthorities());

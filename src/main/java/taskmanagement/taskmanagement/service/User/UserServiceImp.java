@@ -11,10 +11,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
-public class UserServiceImp implements IUserService {
+public class UserServiceImp implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	private PasswordEncoder bCryptPasswordEncoder;
 
 	public List<User> findAll() {
 		return userRepository.findAll();
@@ -47,6 +50,12 @@ public class UserServiceImp implements IUserService {
 	@Override
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
+	}
+
+	@Override
+	public boolean checkPasswordOld(String passwordIngresada, String passwordOldEncrypted) {
+		return bCryptPasswordEncoder.matches(passwordIngresada, passwordOldEncrypted);
+
 	}
 
 }
