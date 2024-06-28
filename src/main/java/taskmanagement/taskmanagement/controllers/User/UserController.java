@@ -1,4 +1,4 @@
-package taskmanagement.taskmanagement.controllers.UserController;
+package taskmanagement.taskmanagement.controllers.User;
 
 import java.util.Locale;
 

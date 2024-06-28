@@ -30,12 +30,16 @@
 						<div class="form-group">
 							<label class="login2">Nombre </label> <input name="groupName" type="text" id="groupName"
 								class="form-control" placeholder="Usuario" th:field="*{groupName}">
+								<p class="text-danger" th:if="${#fields.hasErrors('groupName')}" th:errors="*{groupName}"
+																							th:class="${#fields.hasErrors('groupName')}? text-danger"></p>
 						</div>
 						<div class="form-group">
 							<label class="login2">Descripción </label>
 
 							<textarea name="description" id="description" type="email" class="form-control"
 								placeholder="Usuario" th:field="*{description}" />
+								<p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+																								th:class="${#fields.hasErrors('description')}? text-danger"></p>
 						</div>
 
 

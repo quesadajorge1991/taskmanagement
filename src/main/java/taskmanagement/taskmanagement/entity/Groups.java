@@ -14,6 +14,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 /**
  *
@@ -30,7 +33,13 @@ public class Groups implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	
+	@NotEmpty(message = "{Form.Valid.Groups.GroupName}")
 	private String groupName;
+	
+	
+	@NotEmpty(message = "{Form.Valid.Groups.Description}")
 	private String description;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId")

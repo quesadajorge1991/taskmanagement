@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.validation.Valid;
 import taskmanagement.taskmanagement.controllers.util.Permisos;
 import taskmanagement.taskmanagement.entity.Authority;
 import taskmanagement.taskmanagement.entity.Groups;
@@ -24,9 +27,9 @@ public class GroupController {
 
 	@Autowired
 	GroupServiceImp groupService;
-	
+
 	@Autowired
-    private MessageSource messageSource;
+	private MessageSource messageSource;
 
 	@GetMapping(value = "/groups")
 	public String groups(Model model) {
@@ -43,45 +46,77 @@ public class GroupController {
 		return "/group/add";
 	}
 
-	@PostMapping("/addGroup")
-	public String resetPassword(@ModelAttribute("group") Groups group,
-			@RequestParam(value = "selectedauthorities") String selectedauthorities[],
+	@PostMapping("/updateGroup")
+	public String updateGroup(@ModelAttribute("group") @Valid Groups group, BindingResult result, Model model,
+			@RequestParam(value = "selectedauthorities", required = false) String selectedauthorities[],
 			RedirectAttributes redirectAttributes) {
+
+		if (result.hasErrors()) {
+
+			Groups groupp = groupService.findById(group.getId());
+			model.addAttribute("group", groupp);
+			model.addAttribute("autorities", Permisos.getListauthorities());
+			model.addAttribute("autoritiesKeys", groupService.getKeys(Permisos.getListauthorities()));
+			model.addAttribute("autoritiesByGroup", groupService.findGroupAuthoritiesByGroup(group.getGroupName()));
+			return "/group/update";
+		}
 
 		/* validar que grupos no este null */
 		System.out.println(group.getId());
 
 		try {
-			if (group.getId() == null) {
-				System.out.println(group.getId());
-				groupService.save(new Groups(group.getGroupName(), group.getDescription()));
+			groupService.save(new Groups(group.getId(), group.getGroupName(), group.getDescription()));
 
-				groupService.removeGroupAuthority(group.getGroupName());/* elimina todos los permisos de un grupo */
-				/* agregar permisos al grupo */
+			groupService.removeGroupAuthority(group.getGroupName());/* elimina todos los permisos de un grupo */
 
-				for (int i = 0; i < selectedauthorities.length; i++) {
-					groupService.addGroupAuthority(group.getGroupName(), new Authority(selectedauthorities[i]));
-				}
-
-				redirectAttributes.addFlashAttribute("msgtype", "success");
-				redirectAttributes.addFlashAttribute("msgtitle", "Información");
-				redirectAttributes.addFlashAttribute("msgbody", "Se agrego el grupo " + group.getGroupName());
-				return "redirect:/group/groups";
-
-			} else { /* si el id del objeto group esta en null inserta de lo contrario actualiza */
-				groupService.save(new Groups(group.getId(), group.getGroupName(), group.getDescription()));
-
-				groupService.removeGroupAuthority(group.getGroupName());/* elimina todos los permisos de un grupo */
-
-				for (int i = 0; i < selectedauthorities.length; i++) {
-					groupService.addGroupAuthority(group.getGroupName(), new Authority(selectedauthorities[i]));
-				}
-
-				redirectAttributes.addFlashAttribute("msgtype", "success");
-				redirectAttributes.addFlashAttribute("msgtitle", "Información");
-				redirectAttributes.addFlashAttribute("msgbody",
-						"Se actualizaron los permisos al grupo " + group.getGroupName());
+			for (int i = 0; i < selectedauthorities.length; i++) {
+				groupService.addGroupAuthority(group.getGroupName(), new Authority(selectedauthorities[i]));
 			}
+
+			redirectAttributes.addFlashAttribute("msgtype", "success");
+			redirectAttributes.addFlashAttribute("msgtitle", "Información");
+			redirectAttributes.addFlashAttribute("msgbody",
+					"Se actualizaron los permisos al grupo " + group.getGroupName());
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			redirectAttributes.addFlashAttribute("msgtype", "error");
+			redirectAttributes.addFlashAttribute("msgtitle", "Error");
+			redirectAttributes.addFlashAttribute("msgbody", "Error al agregar el grupo" + group.getGroupName());
+		}
+
+		return "redirect:/group/groups";
+	}
+
+	@PostMapping("/addGroup")
+	public String resetPassword(@ModelAttribute("group") @Valid Groups group, BindingResult result, Model model,
+			@RequestParam(value = "selectedauthorities", required = false) String selectedauthorities[],
+			RedirectAttributes redirectAttributes) {
+
+		if (result.hasErrors()) {
+
+			model.addAttribute("group", new Groups());
+			model.addAttribute("autorities", Permisos.getListauthorities());
+			return "/group/add";
+		}
+
+		/* validar que grupos no este null */
+		System.out.println(group.getId());
+
+		try {
+			groupService.save(new Groups(group.getGroupName(), group.getDescription()));
+
+			groupService.removeGroupAuthority(group.getGroupName());/* elimina todos los permisos de un grupo */
+			/* agregar permisos al grupo */
+
+			for (int i = 0; i < selectedauthorities.length; i++) {
+				groupService.addGroupAuthority(group.getGroupName(), new Authority(selectedauthorities[i]));
+			}
+
+			redirectAttributes.addFlashAttribute("msgtype", "success");
+			redirectAttributes.addFlashAttribute("msgtitle", "Información");
+			redirectAttributes.addFlashAttribute("msgbody", "Se agrego el grupo " + group.getGroupName());
+			return "redirect:/group/groups";
 
 		} catch (Exception e) {
 			// TODO: handle exception
