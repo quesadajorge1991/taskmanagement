@@ -30,11 +30,11 @@ public class WebSecurityConfiguration {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/dist/**", "/customFunction/**", "/plugins/**", "/error/**",
+						.requestMatchers("/**","/dist/**", "/customFunction/**", "/plugins/**", "/error/**",
 								"/templates/templateBase/**")
 						.permitAll()
 
-						.requestMatchers("/").authenticated().requestMatchers("/user/**", "/group/**")
+						.requestMatchers("/","/home").authenticated().requestMatchers("/user/**", "/group/**","/task/**")
 						.hasAnyAuthority("ADMIN", "READ", "CREATE", "UPDATE", "DELETE")
 
 				/* .anyRequest().authenticated() */

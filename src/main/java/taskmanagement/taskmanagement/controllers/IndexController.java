@@ -23,6 +23,14 @@ public class IndexController {
 		model.addAttribute("isAuthenticated", authentication != null);
 		return "index";
 	}
+	
+	@GetMapping(value = "/home")
+	public String home(Model model) {
+		model.addAttribute("msg", "Mensaje del controlador");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("isAuthenticated", authentication != null);
+		return "home";
+	}
 
 	@GetMapping(value = "/base")
 	public String in() {

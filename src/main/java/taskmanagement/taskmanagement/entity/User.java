@@ -85,6 +85,12 @@ public class User implements Serializable, UserDetails {
 		this.description = description;
 	}
 
+	
+
+	public User(int userId) {
+		this.userId = userId;
+	}
+
 	public boolean isEnabled() {
 		return enabled;
 	}

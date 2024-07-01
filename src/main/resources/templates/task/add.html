@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{templateBase/BaseAdminLTE}">
+
+<head>
+	<meta charset="utf-8">
+	<title>Insert title here</title>
+</head>
+
+<body>
+
+
+
+	<div layout:fragment="content">
+
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title" th:text="#{N.task.add}"></h3>
+			</div>
+			<!-- /.card-header -->
+			<!-- form start -->
+			<form th:object="${task}" method="post" th:action="@{/task/addTask}">
+				<div class="card-body">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="login2">Nombre </label> <input name="firstname" type="text"
+								class="form-control" placeholder="Nombre de la tarea" th:field="*{taskName}">
+
+
+						</div>
+						<div class="form-group">
+							<label class="login2">Usuario </label>
+							<select class="form-control select2" style="width: 100%;" th:field="*{user.userId}">
+								<option value="-1">Seleccione usuario</option>
+								<option th:each="user:${users}" th:value="${user.userId}" th:text="${user.username}">
+								</option>
+
+							</select>
+
+
+						</div>
+						<div class="form-group">
+							<label class="login2">Estado </label>
+
+							<select class="form-control select2" style="width: 100%;" th:field="*{status}"
+								data-placeholder="Seleccione estado de tarea">
+								<option value="-1">Seleccione estado de tarea</option>
+								<option th:each="estado:${estatustasks}" th:value="${estado}" th:text="${estado}"
+									>
+								</option>
+
+							</select>
+
+						</div>
+
+						<div class="form-group">
+							<label class="login2">Categoria </label>
+
+							<select class="form-control select2 " multiple="multiple" style="width: 100%;"
+								name="catetogories" data-placeholder="Seleccione estado de tarea">
+								<option>Seleccione categoria</option>
+								<option th:each="category:${categories}" th:value="${category.categoryId}"
+									th:text="${category.categoryName}">
+								</option>
+
+							</select>
+
+						</div>
+						<!-- Date and time -->
+						<div class="form-group">
+							<label>Dead line:</label>
+							<div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+								<input type="text" class="form-control datetimepicker-input" th:field="*{deadline}"
+									data-target="#reservationdatetime" />
+								<div class="input-group-append" data-target="#reservationdatetime"
+									data-toggle="datetimepicker">
+									<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="form-group res-mg-t-15">
+								<label class="login2">Descripción </label>
+								<textarea name="descripcion" class="form-control" th:field="*{description}"
+									id="descripcion" placeholder="Descripción"></textarea>
+								<p class="text-danger" th:if="${#fields.hasErrors('description')}"
+									th:errors="*{description}"
+									th:class="${#fields.hasErrors('description')}? text-danger"></p>
+							</div>
+						</div>
+
+
+
+
+
+
+
+
+					</div>
+
+
+
+
+
+
+					<div class="card-footer">
+						<a class="btn btn-primary waves-effect waves-light" th:href="@{/user/users}"><i
+								class="fa fa-users"></i> Cancelar</a>
+						<button type="submit" class="btn btn-primary waves-effect waves-light">
+							<i class="fa fa-save"></i> Aceptar
+						</button>
+
+
+					</div>
+
+
+				</div>
+				<!-- /.card-body -->
+
+
+
+
+
+
+
+
+
+
+
+
+			</form>
+		</div>
+
+
+
+	</div>
+
+
+
+</body>
+
+</html>

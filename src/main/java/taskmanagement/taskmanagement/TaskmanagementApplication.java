@@ -5,7 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import jakarta.annotation.PostConstruct;
+import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.repository.UserRepository;
+import taskmanagement.taskmanagement.service.User.UserService;
+import taskmanagement.taskmanagement.service.User.UserServiceImp;
 
 
 
@@ -15,10 +19,20 @@ public class TaskmanagementApplication {
 	
 	@Autowired
 	UserRepository usersRepository;
+
+	@Autowired
+	UserServiceImp serviceImp;
+
+
+
 	
 	
-	///@PostConstruct
+	@PostConstruct
 	public void addAuthorities() {
+
+//serviceImp.save(new User("admin", serviceImp.encodePassword("admin"), "admin@admin.com", true, "Admin full"));
+
+
 		
 	//	System.out.println("SIZE " +  usersRepository.findAll().size());
 	}

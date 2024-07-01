@@ -13,20 +13,35 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.provisioning.GroupManager;
 
 import taskmanagement.taskmanagement.entity.Authority;
+import taskmanagement.taskmanagement.entity.Category;
+import taskmanagement.taskmanagement.entity.Task;
 import taskmanagement.taskmanagement.entity.User;
+import taskmanagement.taskmanagement.repository.CategoryRepository;
 import taskmanagement.taskmanagement.repository.GroupAuthoritiesRepository;
 import taskmanagement.taskmanagement.repository.GroupRepository;
 import taskmanagement.taskmanagement.repository.GroupsMembersRepository;
+import taskmanagement.taskmanagement.repository.TaskRepository;
 import taskmanagement.taskmanagement.repository.UserRepository;
 import taskmanagement.taskmanagement.service.Group.GroupServiceImp;
+import taskmanagement.taskmanagement.service.Task.TaskService;
 import taskmanagement.taskmanagement.service.User.UserServiceImp;
 
 @SpringBootTest
 class TaskmanagementApplicationTests {
 
 	@Autowired
+	TaskRepository taskRepository;
+
+	@Autowired
+	CategoryRepository categoryRepository;
+
+
+	@Autowired
+	TaskRepository taskRepository2;
+
+	@Autowired
 	UserServiceImp userService;
-	
+
 	@Autowired
 	UserRepository userRepository;
 
@@ -38,43 +53,37 @@ class TaskmanagementApplicationTests {
 
 	@Autowired
 	GroupServiceImp groupServiceImp;
-	
+
 	@Autowired
 	GroupAuthoritiesRepository authoritiesRepository;
-	
+
 	@Autowired
 	GroupsMembersRepository groupsMembersRepository;
 
 	@Test
 	void contextLoads() {
 
-		// userService.save(new User("email", "descripcion", "pass", "admin"));
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new Authority("READ"));
-		authorities.add(new Authority("WRITE"));
-		authorities.add(new Authority("UPDATE"));
-
-		// groupServiceImp.createGroup("MIGRUPO", authorities);
-	//	 groupServiceImp.deleteGroup("MIGRUPO");
-		GrantedAuthority authority = new GrantedAuthority() {
-
-			@Override
-			public String getAuthority() {
-				// TODO Auto-generated method stub
-				return "READ";
-			}
-		};
+	/*	Task task=new Task();
+		task.setTaskName("pruebaaatask");
 		
-		//groupServiceImp.addGroupAuthority("Migrupo", authority);
-	//	groupServiceImp.removeGroupAuthority("MIGRUPO", authority);
-		// System.out.println("SIZE " + );
+		Category category=new Category();
+		category.setCategoryName("categoria1");
+	
 		
-		//System.out.println(authoritiesRepository.findByAuthority("READ").size());
-	//	groupServiceImp.removeUserFromGroup("admin", "MIGRUPO");
+		List<Task> list=new ArrayList<>();
+		list.add(task);
+		category.setTasks(list);
 		
-	//System.out.println(groupServiceImp.findUsersInGroup("MIGRUPO").size());
 		
-		System.out.println(userService.checkPasswordOld("admind", "$2a$10$QTWoUnhRhfr4rOn2yk2Ib.CE7tu8DfPriUiZBkH7FoOW3mltREgbG"));
+		
+		categoryRepository.save(category);*/
+		
+		
+		System.out.println(userService.encodePassword("admin"));
+		
+		
+		
+		
 
 	}
 

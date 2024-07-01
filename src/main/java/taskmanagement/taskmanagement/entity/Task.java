@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the tasks database table.
  * 
@@ -47,6 +46,36 @@ public class Task implements Serializable {
 
 	public Task() {
 	}
+	
+	
+	
+
+	public Task(int taskId, Date deadline, String description, String status, String taskName, User user) {
+		super();
+		this.taskId = taskId;
+		this.deadline = deadline;
+		this.description = description;
+		this.status = status;
+		this.taskName = taskName;
+		this.user = user;
+	}
+
+
+
+
+	public Task(Date deadline, String description, String status, String taskName, User user) {
+		super();
+		this.deadline = deadline;
+		this.description = description;
+		this.status = status;
+		this.taskName = taskName;
+		this.user = user;
+	}
+	
+	
+
+
+
 
 	public int getTaskId() {
 		return this.taskId;
