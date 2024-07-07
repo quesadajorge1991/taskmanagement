@@ -55,8 +55,7 @@ public class TaskService implements ServiceBase<Task> {
 
 	}
 
-	public void addTaskWithCategories(Task task, List<String> categoryNames) {
-		
+	public void addTaskWithCategories(Task task, String categoryNames[]) {
 
 		List<Category> categories = new ArrayList<>();
 		for (String categoryName : categoryNames) {
@@ -70,6 +69,12 @@ public class TaskService implements ServiceBase<Task> {
 		}
 		task.setCategories(categories);
 		taskRepository.save(task);
+
+	}
+
+	@Override
+	public Task findById(int id) {
+		return taskRepository.findById(id).get();
 	}
 
 }

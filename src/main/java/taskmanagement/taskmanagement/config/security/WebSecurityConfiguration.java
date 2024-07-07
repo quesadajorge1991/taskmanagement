@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity // habilita la seguridad
 @EnableMethodSecurity(securedEnabled = true) // habilita la seguridad a nivel de metodos
@@ -30,11 +28,12 @@ public class WebSecurityConfiguration {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/**","/dist/**", "/customFunction/**", "/plugins/**", "/error/**",
+						.requestMatchers("/category/**", "/dist/**", "/customFunction/**", "/plugins/**", "/error/**",
 								"/templates/templateBase/**")
 						.permitAll()
 
-						.requestMatchers("/","/home").authenticated().requestMatchers("/user/**", "/group/**","/task/**")
+						.requestMatchers("/", "/home").authenticated()
+						.requestMatchers("/user/**", "/group/**", "/task/**")
 						.hasAnyAuthority("ADMIN", "READ", "CREATE", "UPDATE", "DELETE")
 
 				/* .anyRequest().authenticated() */
@@ -46,17 +45,14 @@ public class WebSecurityConfiguration {
 																											// personalizada
 
 				.formLogin(
-
 						formlogin -> {
 							try {
 								formlogin.loginPage("/login").permitAll().loginProcessingUrl("/logincheck");
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						})
 				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true))
-
 				.build();
 
 	}

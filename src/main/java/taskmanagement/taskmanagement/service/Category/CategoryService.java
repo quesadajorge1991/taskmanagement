@@ -9,7 +9,6 @@ import taskmanagement.taskmanagement.entity.Category;
 import taskmanagement.taskmanagement.repository.CategoryRepository;
 import taskmanagement.taskmanagement.service.ServiceBase;
 
-
 @Service
 public class CategoryService implements ServiceBase<Category> {
 
@@ -37,6 +36,11 @@ public class CategoryService implements ServiceBase<Category> {
 	public void save(Category entity) {
 		categoryRepository.save(entity);
 
+	}
+
+	@Override
+	public Category findById(int id) {
+		return categoryRepository.findById(id).get();
 	}
 
 }

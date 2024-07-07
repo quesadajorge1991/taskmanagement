@@ -238,4 +238,14 @@ public class GroupServiceImp implements GroupService, ServiceBase<Groups> {
 
 	}
 
+	@Override
+	public void addGroupAuthority(String groupName, String[] autorities) {
+		if (autorities!=null) {
+			for (String authority : autorities) {
+				addGroupAuthority(groupName, new Authority(authority));
+			}
+			
+		}
+	}
+
 }

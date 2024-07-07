@@ -50,8 +50,8 @@
 									<td th:text=${task.description}> </td>
 
 									<td>
-										<a title="Modificar tarea" class="btn btn-info"
-											th:href="@{/updateUsuario/}+${task.taskId}"> <i class="nav-icon fas fa-edit"
+										<a title="ELiminar Tarea" class="btn btn-info"
+											th:href="@{/task/update/}+${task.taskId}"> <i class="nav-icon fas fa-edit"
 												aria-hidden="true"></i></a>
 										<button title="Eliminar tarea" class="btn btn-danger"
 											th:attr="data-target='#DangerModalalert'+${task.taskId}" type="submit"
@@ -83,7 +83,7 @@
 																class="fa fa-close"></i> Cancelar</a>
 														<a type="submit"
 															class="btn btn-primary waves-effect waves-light"
-															th:attr="href='/delete_usuario/'+${task.taskId}"><i
+															th:attr="href='/task/delete/'+${task.taskId}"><i
 																class="fa fa-trash"></i> Eliminar</a>
 													</div>
 												</div>

@@ -35,6 +35,9 @@ class TaskmanagementApplicationTests {
 	@Autowired
 	CategoryRepository categoryRepository;
 
+	@Autowired
+	TaskService taskService;
+
 
 	@Autowired
 	TaskRepository taskRepository2;
@@ -79,8 +82,33 @@ class TaskmanagementApplicationTests {
 		categoryRepository.save(category);*/
 		
 		
-		System.out.println(userService.encodePassword("admin"));
+		//System.out.println(userService.encodePassword("admin"));
 		
+		
+		Task task=new Task();
+		task.setTaskName("pruebaaatask");
+		
+		
+		Category category=new Category();
+		category.setCategoryName("categoriaInversa");
+		
+		List<Category> list=new ArrayList<>();
+		list.add(category);
+		
+		task.setCategories(list);
+
+	/* List<String> temp=new ArrayList<>();
+		temp.add("pruebaCATGORIGA");
+		temp.add("pruebaCATGORIGA1");
+		temp.add("pruebaCATGORIGA2");*/
+
+		taskService.save(task);
+
+		
+		
+	//taskService.addTaskWithCategories(task, temp);
+
+
 		
 		
 		

@@ -94,37 +94,24 @@ public class GroupController {
 			RedirectAttributes redirectAttributes) {
 
 		if (result.hasErrors()) {
-
 			model.addAttribute("group", new Groups());
 			model.addAttribute("autorities", Permisos.getListauthorities());
 			return "/group/add";
 		}
-
-		/* validar que grupos no este null */
-		System.out.println(group.getId());
-
 		try {
-			groupService.save(new Groups(group.getGroupName(), group.getDescription()));
-
+			groupService.save(new Groups(group.getGroupName(), group.getDescription())); /* save el grupo en la bd */
 			groupService.removeGroupAuthority(group.getGroupName());/* elimina todos los permisos de un grupo */
-			/* agregar permisos al grupo */
-
-			for (int i = 0; i < selectedauthorities.length; i++) {
-				groupService.addGroupAuthority(group.getGroupName(), new Authority(selectedauthorities[i]));
-			}
+			groupService.addGroupAuthority(group.getGroupName(), selectedauthorities); /* agregar permisos al grupo */
 
 			redirectAttributes.addFlashAttribute("msgtype", "success");
 			redirectAttributes.addFlashAttribute("msgtitle", "Información");
 			redirectAttributes.addFlashAttribute("msgbody", "Se agrego el grupo " + group.getGroupName());
 			return "redirect:/group/groups";
-
 		} catch (Exception e) {
-			// TODO: handle exception
 			redirectAttributes.addFlashAttribute("msgtype", "error");
 			redirectAttributes.addFlashAttribute("msgtitle", "Error");
 			redirectAttributes.addFlashAttribute("msgbody", "Error al agregar el grupo" + group.getGroupName());
 		}
-
 		return "redirect:/group/groups";
 	}
 

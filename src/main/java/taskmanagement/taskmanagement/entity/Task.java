@@ -32,7 +32,10 @@ public class Task implements Serializable {
 	private String taskName;
 
 	//bi-directional many-to-many association to Category
-	@ManyToMany(mappedBy="tasks")
+	
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(name = "taskcategory", joinColumns = { @JoinColumn(name = "task_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "category_id") })
 	private List<Category> categories;
 
 	//bi-directional many-to-one association to Comment
@@ -73,6 +76,24 @@ public class Task implements Serializable {
 	}
 	
 	
+
+
+
+
+	
+
+
+
+
+	public Task(Date deadline, String description, String status, String taskName, List<Category> categories,
+			User user) {
+		this.deadline = deadline;
+		this.description = description;
+		this.status = status;
+		this.taskName = taskName;
+		this.categories = categories;
+		this.user = user;
+	}
 
 
 

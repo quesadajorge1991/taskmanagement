@@ -9,8 +9,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,9 +76,18 @@ public class TaskController {
 
 		try {
 			if (task.getTaskId() == 0) { /* si el id es 0 se add */
-				
-				taskService.save(new Task(task.getDeadline(), task.getDescription(), task.getStatus(),
-						task.getTaskName(),task.getUser()));
+
+			/* 	List<String> tempcate = new ArrayList<>();
+				for (String categ : catetogories) {
+					tempcate.add(categ);
+				}*/
+				taskService.addTaskWithCategories(task, catetogories);
+
+				/*
+				 * taskService.save(new Task(task.getDeadline(), task.getDescription(),
+				 * task.getStatus(),
+				 * task.getTaskName(), task.getUser()));
+				 */
 
 				redirectAttributes.addFlashAttribute("msgtype", "success");
 				redirectAttributes.addFlashAttribute("msgtitle", "Información");
@@ -85,7 +96,7 @@ public class TaskController {
 
 			} else {
 				taskService.save(new Task(task.getTaskId(), task.getDeadline(), task.getDescription(), task.getStatus(),
-						task.getTaskName(),task.getUser()));
+						task.getTaskName(), task.getUser()));
 
 				redirectAttributes.addFlashAttribute("msgbody",
 						"Tarea " + task.getTaskName() + " modificado correctamente");
@@ -103,5 +114,37 @@ public class TaskController {
 
 		return "redirect:/task/task";
 	}
+
+	@GetMapping("/delete/{taskId}")
+	public String delete(@PathVariable("taskId") int taskId, RedirectAttributes redirectAttributes) {
+		try {
+
+			taskService.deleteById(taskId);
+			redirectAttributes.addFlashAttribute("msgtype", "success");
+			redirectAttributes.addFlashAttribute("msgtitle", "Información");
+			redirectAttributes.addFlashAttribute("msgbody", "Tarea agrega correctamente ");
+			return "redirect:/task/tasks";
+
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("msgtype", "error");
+			redirectAttributes.addFlashAttribute("msgtitle", "Error");
+			redirectAttributes.addFlashAttribute("msgbody", "Error al eliminar la tarea " + e.getMessage());
+		}
+		return "redirect:/task/tasks";
+	}
+
+	@GetMapping("/update/{taskId}")
+	public String update(Model model,@PathVariable("taskId") int taskId) {
+		Task task=taskService.findById(taskId);
+		model.addAttribute("title", messageSource.getMessage("N.task.update", null, Locale.getDefault()));
+		model.addAttribute("task", task);
+		model.addAttribute("estatustasks", EstadoTarea.getEstadoTarea());
+		model.addAttribute("task", new Task());
+		model.addAttribute("users", userService.findAll());
+		model.addAttribute("categories", categoryService.findAll());
+		return "/task/update";
+
+	}
+	
 
 }

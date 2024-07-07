@@ -54,6 +54,8 @@ public interface GroupService extends GroupManager {
 	List<GroupMembers> findByUsername(String username);
 	
 	void addUserToGroup(String username,String selectedgroups[]);
+
+	void addGroupAuthority(String groupName, String autorities[]);
 	
 
 }

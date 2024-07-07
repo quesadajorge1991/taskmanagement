@@ -12,4 +12,6 @@ public interface ServiceBase<T> {
 
 	void save(T entity);
 
+	T findById(int id);
+
 }

@@ -6,16 +6,20 @@
 	<meta charset="utf-8">
 	<title>Insert title here</title>
 </head>
+
 <body>
 
 
-<div layout:fragment="content">
+	<select th:fragment="categories" id="category" name="category" data-placeholder="Seleccione categoría"
+		aria-describedby="" class="form-control select2">
+		<option th:each="category: ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}">
+		</option>
+	</select>
 
-<h1>index comment</h1>
 
-</div>
 
 
 
 </body>
+
 </html>

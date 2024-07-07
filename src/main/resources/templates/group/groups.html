@@ -11,12 +11,12 @@
 
 
 	<div layout:fragment="content">
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
 		<div class="col-12">
 
@@ -29,8 +29,8 @@
 				</div>
 
 				<div class="text-right">
-					<a th:href="@{/group/add}" class="btn btn-primary form-control mt-2 mr-4"
-						style="width: 75px;"><i class="fa fa-plus"></i> Add</a>
+					<a th:href="@{/group/add}" class="btn btn-primary form-control mt-2 mr-4" style="width: 75px;"><i
+							class="fa fa-plus"></i> Add</a>
 				</div>
 
 				<!-- /.card-header -->
@@ -61,7 +61,7 @@
 									</td>
 								</tr>
 
-							<div class="modal fade" th:id="DangerModalalert+${group.id}">
+								<div class="modal fade" th:id="DangerModalalert+${group.id}">
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-header">
@@ -73,8 +73,8 @@
 											</div>
 											<div class="modal-body">
 												<p style="color: red;">
-													Está seguro que quiere eliminar el usuario <span
-														th:text="${group.id}"></span>
+													Está seguro que quiere eliminar el grupo <span
+														th:text="${group.groupName}"></span>
 												</p>
 											</div>
 											<div class="modal-footer justify-content-between">
@@ -113,82 +113,8 @@
 
 		</div>
 
-		
-		<script type="text/javascript">
-
-			function addGroup() {
-
-				//validar si las pass coinciden 
-
-				var userId = $('#tempo').val();
-
-				/*	var username;
-					var email;
-					var password;
-					var description;
-					var description;
-					var enabled;*/
-
-				var user = {
-					username: "prueba",
-					email: "sdfsdfsdfcorre",
-					password: "passsor",
-					description: "descriptcion",
-					enabled: "true"
-				}
 
 
-				$.ajax({
-					url: '/user/delete_user/' + userId,
-					dataType: 'json',
-					method: 'get',
-					data: {
-						//user: user
-					},
-					success: function (data) {
-
-						//toastr[data.msgtipo](data.msgbody, data.msgtitu);
-
-						alert("BINEN");
-
-						//	$("#tableuser").load('/user/userss', $("#provincia").serialize());
-					},
-					error: function (data) {
-
-						//	var type =/*[[#{Form.vacio.type}]]*/;
-						//	var body =/*[[#{Form.vacio.body}]]*/;
-						//	var title =/*[[#{Form.vacio.title}]]*/;
-						//	toastr[type](body, title);
-						//	console.log("No hay resultado");
-						alert("eror")
-						$("#example1").load('/user/userss');
-					}
-				});
-
-
-			}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		</script>
 
 
 	</div>

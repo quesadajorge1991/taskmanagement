@@ -285,21 +285,21 @@
 
 
 
-								<li class="nav-item menu-open"><a href="#" class="nav-link">
+								<li class="nav-item menu-open"><a th:href="@{/category/categories}" class="nav-link">
 										<i class="fas fa-list-alt nav-icon"></i>
 										<p>
 											Categorias <i class="right fas fa-angle-left"></i>
 										</p>
 									</a>
 									<ul class="nav nav-treeview">
-										<li class="nav-item"><a th:href="@{/group/groups}" class="nav-link"> <i
+										<li class="nav-item"><a th:href="@{/category/categories}" class="nav-link"> <i
 													class="far fa-circle nav-icon"></i>
 												<p>Categorias</p>
 											</a></li>
 
-										<li class="nav-item"><a th:href="@{/group/add}" class="nav-link"> <i
+										<li class="nav-item"><a th:href="@{/category/add}" class="nav-link"> <i
 													class="far fa-circle nav-icon"></i>
-												<p>Add grupo</p>
+												<p>Add categoria</p>
 											</a></li>
 
 									</ul>
@@ -454,7 +454,11 @@
 	<!-- Select2 -->
 	<script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
 
-	<script th:src="@{/customFunction/functionGeneric.js}"></script>
+
+	<!--JS CUSTOM-->
+	<script th:src="@{/customFunction/category/addUpdate.js}"></script>
+    <script th:src="@{/customFunction/functionGeneric.js}"></script>
+
 	
 	
 	<!-- date-range-picker -->
