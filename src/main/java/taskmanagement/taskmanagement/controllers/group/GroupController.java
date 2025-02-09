@@ -99,14 +99,20 @@ public class GroupController {
 			return "/group/add";
 		}
 		try {
-			groupService.save(new Groups(group.getGroupName(), group.getDescription())); /* save el grupo en la bd */
-			groupService.removeGroupAuthority(group.getGroupName());/* elimina todos los permisos de un grupo */
-			groupService.addGroupAuthority(group.getGroupName(), selectedauthorities); /* agregar permisos al grupo */
 
+			groupService.save(new Groups(group.getGroupName(), group.getDescription())); /*
+																							 * save el grupo en la
+																							 * bd
+																							 */
+			groupService.removeGroupAuthority(group.getGroupName());/* elimina todos los permisos de un grupo */
+			groupService.addGroupAuthority(group.getGroupName(), selectedauthorities); /*
+																						 * agregar permisos al grupo
+																						 */
 			redirectAttributes.addFlashAttribute("msgtype", "success");
 			redirectAttributes.addFlashAttribute("msgtitle", "Información");
 			redirectAttributes.addFlashAttribute("msgbody", "Se agrego el grupo " + group.getGroupName());
 			return "redirect:/group/groups";
+
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("msgtype", "error");
 			redirectAttributes.addFlashAttribute("msgtitle", "Error");

@@ -41,9 +41,9 @@
 	<!-- Select2 -->
 	<link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
 	<link rel="stylesheet" th:href="@{/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css}">
-	
+
 	<!-- daterange picker -->
-	  <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+	<link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
 
 
 </head>
@@ -317,11 +317,6 @@
 												<p>Comentarios</p>
 											</a></li>
 
-										<li class="nav-item"><a th:href="@{/group/add}" class="nav-link"> <i
-													class="far fa-circle nav-icon"></i>
-												<p>Add grupo</p>
-											</a></li>
-
 									</ul>
 								</li>
 
@@ -457,10 +452,10 @@
 
 	<!--JS CUSTOM-->
 	<script th:src="@{/customFunction/category/addUpdate.js}"></script>
-    <script th:src="@{/customFunction/functionGeneric.js}"></script>
+	<script th:src="@{/customFunction/functionGeneric.js}"></script>
 
-	
-	
+
+
 	<!-- date-range-picker -->
 	<script th:src="@{/plugins/daterangepicker/daterangepicker.js}"></script>
 
@@ -470,26 +465,27 @@
 		$('.select2bs4').select2({
 			theme: 'bootstrap4'
 		})
-		
+
 		//Date picker
 		$('#reservationdate').datetimepicker({
-		    format: 'L'
+			format: 'L'
 		});
 
 		//Date and time picker
 		$('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+		$('.reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
 
 		//Date range picker
 		$('#reservation').daterangepicker()
 		//Date range picker with time picker
 		$('#reservationtime').daterangepicker({
-		  timePicker: true,
-		  timePickerIncrement: 30,
-		  locale: {
-		    format: 'MM/DD/YYYY hh:mm A'
-		  }
+			timePicker: true,
+			timePickerIncrement: 30,
+			locale: {
+				format: 'MM/DD/YYYY hh:mm A'
+			}
 		})
-		
+
 
 		var Toast = Swal.mixin({
 			toast: true,

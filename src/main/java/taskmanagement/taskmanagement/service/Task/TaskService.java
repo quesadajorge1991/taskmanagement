@@ -1,7 +1,6 @@
 package taskmanagement.taskmanagement.service.Task;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,4 +76,7 @@ public class TaskService implements ServiceBase<Task> {
 		return taskRepository.findById(id).get();
 	}
 
+	public void deleteByUser(int userId) {
+		taskRepository.deleteByUser(userId);
+	}
 }

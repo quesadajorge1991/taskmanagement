@@ -57,7 +57,7 @@
 									<td><a title="Modificar usuario" class="btn btn-info"
 											th:href="@{/user/update/}+${user.userId}"><i class="nav-icon fas fa-edit"
 												aria-hidden="true"></i></a>
-										<button title="Eliminar usuario" class="btn btn-danger"
+										<button title="Eliminar usuario" class="btn btn-danger" 
 											th:attr="data-target='#DangerModalalert'+${user.userId}" type="submit"
 											data-toggle="modal">
 											<i class="fa fa-trash" aria-hidden="true"></i>

@@ -39,4 +39,10 @@ public class AuthorityServiceImp implements ServiceBase<Authority> {
 
 	}
 
+	@Override
+	public Authority findById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

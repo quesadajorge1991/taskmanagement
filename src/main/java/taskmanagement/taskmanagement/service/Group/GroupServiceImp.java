@@ -44,7 +44,11 @@ public class GroupServiceImp implements GroupService, ServiceBase<Groups> {
 	}
 
 	public void save(Groups group) {
-		groupRepository.save(group);
+		/* verificar que el grupo no exista */
+		if (findByGroupName(group.getGroupName()) == null) {
+			groupRepository.save(group);
+		}
+
 	}
 
 	public void deleteById(int id) {
@@ -240,11 +244,11 @@ public class GroupServiceImp implements GroupService, ServiceBase<Groups> {
 
 	@Override
 	public void addGroupAuthority(String groupName, String[] autorities) {
-		if (autorities!=null) {
+		if (autorities != null) {
 			for (String authority : autorities) {
 				addGroupAuthority(groupName, new Authority(authority));
 			}
-			
+
 		}
 	}
 

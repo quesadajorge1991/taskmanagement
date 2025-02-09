@@ -10,8 +10,6 @@ public interface UserService {
 	
 	public boolean checkPasswordOld(String username,String passwordOld);
 	
+	public void deleteAllTaskByUser(int userId);
 	
-	
-	
-
 }

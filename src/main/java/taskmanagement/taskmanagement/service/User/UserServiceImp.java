@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import taskmanagement.taskmanagement.entity.Task;
 import taskmanagement.taskmanagement.entity.User;
 import taskmanagement.taskmanagement.repository.UserRepository;
+import taskmanagement.taskmanagement.service.Task.TaskService;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,6 +21,9 @@ public class UserServiceImp implements UserService {
 
 	@Autowired
 	private PasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	TaskService taskService;
 
 	public List<User> findAll() {
 		return userRepository.findAll();
@@ -55,6 +61,17 @@ public class UserServiceImp implements UserService {
 	@Override
 	public boolean checkPasswordOld(String passwordIngresada, String passwordOldEncrypted) {
 		return bCryptPasswordEncoder.matches(passwordIngresada, passwordOldEncrypted);
+
+	}
+
+	@Override
+	public void deleteAllTaskByUser(int userId) {
+		List<Task> listtask = taskService.findAll();
+		for (Task task : listtask) {
+			if(task.getUser().getUserId()==userId){
+             taskService.delete(task);
+			}
+		}
 
 	}
 

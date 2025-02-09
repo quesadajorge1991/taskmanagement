@@ -22,9 +22,12 @@
 			<!-- /.card-header -->
 			<!-- form start -->
 			<form th:object="${task}" method="post" th:action="@{/task/addTask}">
+
+
 				<div class="card-body">
 					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div class="form-group">
+							<input type="hidden" th:field="*{taskId}">
 							<label class="login2">Nombre </label> <input name="firstname" type="text"
 								class="form-control" placeholder="Nombre de la tarea" th:field="*{taskName}">
 
@@ -33,7 +36,8 @@
 						<div class="form-group">
 							<label class="login2">Usuario </label>
 							<select class="form-control select2" style="width: 100%;" th:field="*{user.userId}">
-								<option th:each="user:${users}" th:value="${user.userId}" th:text="${user.username}">
+								<option th:each="user:${users}" th:selected="${user == user.username}"
+									th:value="${user.userId}" th:text="${user.username}">
 								</option>
 
 							</select>
@@ -46,7 +50,8 @@
 							<select class="form-control select2" style="width: 100%;" th:field="*{status}"
 								data-placeholder="Seleccione estado de tarea">
 								<option value="-1">Seleccione estado de tarea</option>
-								<option th:each="estado:${estatustasks}" th:value="${estado}" th:text="${estado}">
+								<option th:each="estado:${estatustasks}" th:value="${estado}"
+									th:selected="${estado =='EUR'}" th:text="${estado}">
 								</option>
 
 							</select>
@@ -81,9 +86,10 @@
 						<!-- Date and time -->
 						<div class="form-group">
 							<label>Dead line:</label>
-							<div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-								<input type="text" class="form-control datetimepicker-input" th:field="*{deadline}"
-									data-target="#reservationdatetime" />
+							<div class="input-group date" data-target-input="nearest">
+
+								<input id="reservationdatetime" type="text" class="datetimepicker-input" data-toggle="datetimepicker"
+									th:field="*{deadline}" data-target="#reservationdatetime" />
 								<div class="input-group-append" data-target="#reservationdatetime"
 									data-toggle="datetimepicker">
 									<div class="input-group-text"><i class="fa fa-calendar"></i></div>

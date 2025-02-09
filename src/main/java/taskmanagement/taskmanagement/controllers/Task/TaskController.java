@@ -77,10 +77,12 @@ public class TaskController {
 		try {
 			if (task.getTaskId() == 0) { /* si el id es 0 se add */
 
-			/* 	List<String> tempcate = new ArrayList<>();
-				for (String categ : catetogories) {
-					tempcate.add(categ);
-				}*/
+				/*
+				 * List<String> tempcate = new ArrayList<>();
+				 * for (String categ : catetogories) {
+				 * tempcate.add(categ);
+				 * }
+				 */
 				taskService.addTaskWithCategories(task, catetogories);
 
 				/*
@@ -112,7 +114,7 @@ public class TaskController {
 
 		}
 
-		return "redirect:/task/task";
+		return "redirect:/task/tasks";
 	}
 
 	@GetMapping("/delete/{taskId}")
@@ -122,7 +124,7 @@ public class TaskController {
 			taskService.deleteById(taskId);
 			redirectAttributes.addFlashAttribute("msgtype", "success");
 			redirectAttributes.addFlashAttribute("msgtitle", "Información");
-			redirectAttributes.addFlashAttribute("msgbody", "Tarea agrega correctamente ");
+			redirectAttributes.addFlashAttribute("msgbody", "Tarea eliminada correctamente ");
 			return "redirect:/task/tasks";
 
 		} catch (Exception e) {
@@ -134,17 +136,15 @@ public class TaskController {
 	}
 
 	@GetMapping("/update/{taskId}")
-	public String update(Model model,@PathVariable("taskId") int taskId) {
-		Task task=taskService.findById(taskId);
+	public String update(Model model, @PathVariable("taskId") int taskId) {
+		Task task = taskService.findById(taskId);
 		model.addAttribute("title", messageSource.getMessage("N.task.update", null, Locale.getDefault()));
 		model.addAttribute("task", task);
-		model.addAttribute("estatustasks", EstadoTarea.getEstadoTarea());
-		model.addAttribute("task", new Task());
+	    model.addAttribute("estatustasks", EstadoTarea.getEstadoTarea());
 		model.addAttribute("users", userService.findAll());
 		model.addAttribute("categories", categoryService.findAll());
 		return "/task/update";
 
 	}
-	
 
 }

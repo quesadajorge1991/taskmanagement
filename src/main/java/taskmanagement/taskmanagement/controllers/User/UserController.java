@@ -197,6 +197,8 @@ public class UserController {
 	@GetMapping(value = "/deleteuser/{userId}")
 	public String delete(@PathVariable(value = "userId") int id, RedirectAttributes redirectAttributes) {
 		try {
+			/* Eliminar todas las tareas asociadas a dicho usuario */
+			userService.deleteAllTaskByUser(id);
 			userService.delete(userService.findById(id));
 			redirectAttributes.addFlashAttribute("msgtype", "success");
 			redirectAttributes.addFlashAttribute("msgtitle", "Información");
